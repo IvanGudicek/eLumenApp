@@ -227,20 +227,11 @@
     android:orientation="horizontal">
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="register!"
         android:id="@+id/registerButton"
         android:onClick="registerButtonListener"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="upload picture to the server!"
-        android:id="@+id/uploadPicture"
-        android:onClick="savePictureToTheServer"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

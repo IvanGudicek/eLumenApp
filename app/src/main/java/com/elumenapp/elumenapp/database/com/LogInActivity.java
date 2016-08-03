@@ -1,15 +1,12 @@
 package com.elumenapp.elumenapp.database.com;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -22,9 +19,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.elumenapp.elumenapp.MainActivity;
 import com.elumenapp.elumenapp.R;
-import com.elumenapp.elumenapp.person.com.Person;
-import com.elumenapp.elumenapp.person.com.PersonActivity;
+import com.elumenapp.elumenapp.person.com.RecyclerActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,9 +52,7 @@ public class LogInActivity extends AppCompatActivity {
     public void logInButtonListener(View view){
         user = loginUser.getText().toString();
         password = loginPassword.getText().toString();
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo == null || networkInfo.isConnected() == false) {
+        if (!MainActivity.connecting) {
             Toast.makeText(this, "No internet connection!!!", Toast.LENGTH_LONG).show();
         } else if(user.equals("") || password.equals("")){
             displayAlert("null");
@@ -65,8 +60,9 @@ public class LogInActivity extends AppCompatActivity {
             final StringRequest stringRequest = new StringRequest(Request.Method.POST, login_url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    JSONArray jsonArray;
                     try {
-                        JSONArray jsonArray =jsonArray = new JSONArray(response);
+                        jsonArray = new JSONArray(response);
                         JSONObject jsonObject = jsonArray.getJSONObject(0);
                         String code = jsonObject.getString("code");
                         staticMessage = jsonObject.getString("message");
@@ -75,18 +71,22 @@ public class LogInActivity extends AppCompatActivity {
                         byte[] decodedString = Base64.decode(string, Base64.DEFAULT);
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                         Drawable drawable = new BitmapDrawable(getResources(), decodedByte);
-                       // imageView.setImageDrawable(drawable);
-                        Person.setStaticPerson(jsonObject.getString("username"), drawable, new BigDecimal(jsonObject.getDouble("total_score")),jsonObject.getString("password") ,
+                        RecyclerActivity.setCurrentPerson(jsonObject.getString("username"), drawable, new BigDecimal(jsonObject.getDouble("total_score")), jsonObject.getString("password"),
                                 jsonObject.getString("description"), jsonObject.getString("name"), jsonObject.getString("lastname"),
                                 jsonObject.getString("email"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    MainActivity.server_error = false;
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(LogInActivity.this, "SOmethings went wrong...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LogInActivity.this, "SOmething went wrong on the server...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LogInActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
+                    error.printStackTrace();
+                    MainActivity.server_error = true;
+                    finish();
                 }
             }){
                 @Override
@@ -104,13 +104,22 @@ public class LogInActivity extends AppCompatActivity {
 
     public void displayAlert(String string){
         alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setTitle("warning");
-        if(string.equals("null")){
-            alertBuilder.setMessage("You must fill the fields");
-        }else if(string.equals("login_failed")){
-            alertBuilder.setMessage(staticMessage);
-        }else{
-            startActivity(new Intent(LogInActivity.this, PersonActivity.class));
+        switch(string){
+            case "null":{
+                alertBuilder.setTitle("warning");
+                alertBuilder.setMessage("You must fill the fields");
+                MainActivity.logging = false;
+            }break;
+            case "login_failed":{
+                alertBuilder.setTitle("warning");
+                alertBuilder.setMessage(staticMessage);
+                MainActivity.logging = false;
+            }break;
+            default:{
+                MainActivity.logging = true;
+                startActivity(new Intent(LogInActivity.this, MainActivity.class));
+                Toast.makeText(this, "You are successfully logging :)", Toast.LENGTH_LONG).show();
+            }break;
         }
         alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override

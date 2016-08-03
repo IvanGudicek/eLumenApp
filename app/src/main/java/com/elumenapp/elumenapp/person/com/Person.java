@@ -17,15 +17,6 @@ public class Person {
     private Drawable drawable;
     private BigDecimal totalScore = new BigDecimal(0.00);
 
-    static Person staticPerson = new Person(null, null, null, null, null, null, null,null);
-
-    public static Person getStaticPerson() {
-        return staticPerson;
-    }
-
-    public static void setStaticPerson(String username, Drawable drawable, BigDecimal bigDecimal, String password, String description, String name, String lastname, String email) {
-        staticPerson = new Person(username, drawable, bigDecimal, password, description, name, lastname, email);
-    }
 
     public void setCurrentPerson(Person person){
         this.username = person.username;

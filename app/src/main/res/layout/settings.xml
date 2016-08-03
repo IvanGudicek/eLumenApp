@@ -19,22 +19,4 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="73dp" />
 
-    <RadioButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New RadioButton"
-        android:id="@+id/radioButtonSettingsHEHEHEHEHHEHEHEH"
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="133dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="promjena"
-        android:id="@+id/textView21"
-        android:layout_below="@+id/radioButtonSettingsHEHEHEHEHHEHEHEH"
-        android:layout_alignEnd="@+id/radioButtonSettingsHEHEHEHEHHEHEHEH"
-        android:layout_marginTop="60dp" />
 </RelativeLayout>

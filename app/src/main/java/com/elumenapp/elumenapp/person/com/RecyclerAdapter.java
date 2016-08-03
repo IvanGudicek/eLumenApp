@@ -18,6 +18,15 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder>{
     private List<Person> dataList;
 
+
+    public List<Person> getDataList() {
+        return dataList;
+    }
+
+    public void setDataList(List<Person> dataList) {
+        this.dataList = dataList;
+    }
+
     public RecyclerAdapter(List<Person> dataList)
     {
         this.dataList = dataList;
@@ -27,14 +36,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     @Override
     public RecyclerAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_layout, parent, false);
-        RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view);
-        return recyclerViewHolder;
+        RecyclerViewHolder recyclerViewHolder1 = new RecyclerViewHolder(view);
+        return recyclerViewHolder1;
     }
-/*
+
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-    }*/
+    }
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
@@ -61,6 +70,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
             imageView = (ImageView)itemView.findViewById(R.id.itemImageView);
             username = (TextView)itemView.findViewById(R.id.itemUsername);
             ratingBar = (RatingBar)itemView.findViewById(R.id.itemRatingBar);
+            ratingBar.setEnabled(false);
         }
     }
 }

@@ -19,10 +19,10 @@ public class PersonActivity extends AppCompatActivity {
         name = (TextView)findViewById(R.id.personName);
         username = (TextView)findViewById(R.id.personUsername);
         email = (TextView)findViewById(R.id.personEmail);
-        name.setText("name: " + Person.getStaticPerson().getName() + ", last name: " + Person.getStaticPerson().getLastname());
-        username.setText(Person.getStaticPerson().getUsername());
-        email.setText(Person.getStaticPerson().getEmail());
+        name.setText("name: " + RecyclerActivity.getCurrentPerson().getName() + ", last name: " + RecyclerActivity.getCurrentPerson().getLastname());
+        username.setText(RecyclerActivity.getCurrentPerson().getUsername());
+        email.setText(RecyclerActivity.getCurrentPerson().getEmail());
         imageOfPerson = (ImageView)findViewById(R.id.imageViewPerson);
-        imageOfPerson.setImageDrawable(Person.getStaticPerson().getDrawable());
+        imageOfPerson.setImageDrawable(RecyclerActivity.getCurrentPerson().getDrawable());
     }
 }

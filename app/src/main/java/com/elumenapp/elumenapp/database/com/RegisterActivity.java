@@ -1,12 +1,9 @@
 package com.elumenapp.elumenapp.database.com;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.elumenapp.elumenapp.MainActivity;
 import com.elumenapp.elumenapp.R;
 import com.kosalgeek.android.photoutil.CameraPhoto;
 import com.kosalgeek.android.photoutil.GalleryPhoto;
@@ -54,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST) {
                 String photoPath = cameraPhoto.getPhotoPath();
-                Bitmap bitmap = null;
+                Bitmap bitmap;
                 try {
                     bitmap = ImageLoader.init().from(photoPath).requestSize(1024, 1024).getBitmap();
                     ivImage.setImageBitmap(bitmap);
@@ -133,9 +131,7 @@ public class RegisterActivity extends AppCompatActivity {
         byte[] image = stream.toByteArray();
         image_string = Base64.encodeToString(image, 0);
 
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo == null || networkInfo.isConnected() == false) {
+        if (!MainActivity.connecting) {
             Toast.makeText(this, "No internet connection!!!", Toast.LENGTH_LONG).show();
         } else {
             if (name.equals("") || name.equals("") || username.equals("") || lastname.equals("") || email.equals("") || password.equals("") || check_password.equals("")) {
@@ -165,9 +161,11 @@ public class RegisterActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RegisterActivity.this, "Somethings went wrong...", Toast.LENGTH_LONG).show();
-                        error.getMessage();
+                        Toast.makeText(RegisterActivity.this, "SOmething went wrong on the server...", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
                         error.printStackTrace();
+                        MainActivity.server_error = true;
+                        finish();
                     }
                 }) {
                     @Override
@@ -181,7 +179,7 @@ public class RegisterActivity extends AppCompatActivity {
                         params.put("description", description);
                         params.put("email", email);
                         params.put("image", image_string);
-                        params.put("name_of_image", email.toString() + "_" + username.toString());
+                        params.put("name_of_image", email + "_" + username);
                         return params;
                     }
                 };
@@ -195,6 +193,26 @@ public class RegisterActivity extends AppCompatActivity {
         alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                switch(code){
+                    case "error":{
+                        dialog.cancel();
+                    }break;
+                    case "password":{
+                        editPassword.setText("");
+                        editCheck_password.setText("");
+                    }break;
+                    case "reg_success":{
+                        finish();
+                    }break;
+                    case "reg_failed":{
+                        editUsername.setText("");
+                        editEmail.setText("");
+                        editPassword.setText("");
+                        editCheck_password.setText("");
+                    }break;
+                }
+                /*
+
                 if (code.equals("input error")) {
                     dialog.cancel();
                 } else if (code.equals("password")) {
@@ -207,7 +225,7 @@ public class RegisterActivity extends AppCompatActivity {
                     editEmail.setText("");
                     editPassword.setText("");
                     editCheck_password.setText("");
-                }
+                }*/
             }
         });
         AlertDialog alertDialog = alertBuilder.create();
