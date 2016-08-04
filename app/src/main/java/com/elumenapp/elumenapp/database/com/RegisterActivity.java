@@ -193,39 +193,28 @@ public class RegisterActivity extends AppCompatActivity {
         alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch(code){
-                    case "error":{
+                switch (code) {
+                    case "error": {
                         dialog.cancel();
-                    }break;
-                    case "password":{
+                    }
+                    break;
+                    case "password": {
                         editPassword.setText("");
                         editCheck_password.setText("");
-                    }break;
-                    case "reg_success":{
+                    }
+                    break;
+                    case "reg_success": {
                         finish();
-                    }break;
-                    case "reg_failed":{
+                    }
+                    break;
+                    case "reg_failed": {
                         editUsername.setText("");
                         editEmail.setText("");
                         editPassword.setText("");
                         editCheck_password.setText("");
-                    }break;
+                    }
+                    break;
                 }
-                /*
-
-                if (code.equals("input error")) {
-                    dialog.cancel();
-                } else if (code.equals("password")) {
-                    editPassword.setText("");
-                    editCheck_password.setText("");
-                } else if (code.equals("reg_success")) {
-                    finish();
-                } else if (code.equals("reg_failed")) {
-                    editUsername.setText("");
-                    editEmail.setText("");
-                    editPassword.setText("");
-                    editCheck_password.setText("");
-                }*/
             }
         });
         AlertDialog alertDialog = alertBuilder.create();

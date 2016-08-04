@@ -16,13 +16,22 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.elumenapp.elumenapp.MainActivity;
 import com.elumenapp.elumenapp.R;
+import com.elumenapp.elumenapp.database.com.MySingleton;
+import com.elumenapp.elumenapp.person.com.RecyclerActivity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Quiz_Activity extends AppCompatActivity {
 
@@ -390,12 +399,14 @@ public class Quiz_Activity extends AppCompatActivity {
         ratingText.setText("Your score is: ");
         ratingBar = (RatingBar)dialogView.findViewById(R.id.ratingBar);
         ratingBar.setStepSize((float) 0.01);
-        ratingBar.setRating((float)totalScore.floatValue());
+        ratingBar.setRating(totalScore.floatValue());
         ratingBar.setEnabled(false);
 
         alertBuilder.setPositiveButton("Yes please!", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                BigDecimal score = RecyclerActivity.getCurrentPerson().getTotalScore();
+                RecyclerActivity.getCurrentPerson().setTotalScore(score.add(totalScore));
                 startActivity(new Intent(Quiz_Activity.this, MainActivity.class));
                 finish();
             }
@@ -413,6 +424,33 @@ public class Quiz_Activity extends AppCompatActivity {
 
     private TextView ratingText;
     private RatingBar ratingBar;
+    private static final String update_person = "";
+
+
+    public void updateScoreToPersonDatabase() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, update_person, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                //Adding parameters
+                params.put("username", RecyclerActivity.getCurrentPerson().getUsername());
+                params.put("password", RecyclerActivity.getCurrentPerson().getPassword());
+                params.put("score", RecyclerActivity.getCurrentPerson().getTotalScore().toString());
+                return params;
+            }
+        };
+        MySingleton.getInstance(Quiz_Activity.this).addToRequestQueue(stringRequest);
+    }
 
     public void throwFinishAlert(){
         alertBuilder = new AlertDialog.Builder(Quiz_Activity.this);
@@ -426,12 +464,15 @@ public class Quiz_Activity extends AppCompatActivity {
         ratingText.setText("Your score is: ");
         ratingBar = (RatingBar)dialogView.findViewById(R.id.ratingBar);
         ratingBar.setStepSize((float) 0.01);
-        ratingBar.setRating((float)totalScore.floatValue());
+        ratingBar.setRating(totalScore.floatValue());
         ratingBar.setEnabled(false);
 
         alertBuilder.setPositiveButton("Go to Main menu", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                BigDecimal score = RecyclerActivity.getCurrentPerson().getTotalScore();
+                RecyclerActivity.getCurrentPerson().setTotalScore(score.add(totalScore));
+                updateScoreToPersonDatabase();
                 finish();
                 startActivity(new Intent(Quiz_Activity.this, MainActivity.class));
             }
@@ -443,6 +484,9 @@ public class Quiz_Activity extends AppCompatActivity {
         }).setPositiveButton("start again", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                BigDecimal score = RecyclerActivity.getCurrentPerson().getTotalScore();
+                RecyclerActivity.getCurrentPerson().setTotalScore(score.add(totalScore));
+                updateScoreToPersonDatabase();
                 finish();
                 startActivity(new Intent(Quiz_Activity.this, StartQuizActivity.class));
             }
@@ -452,8 +496,6 @@ public class Quiz_Activity extends AppCompatActivity {
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
-
-
 
 
     public void showAlert() {

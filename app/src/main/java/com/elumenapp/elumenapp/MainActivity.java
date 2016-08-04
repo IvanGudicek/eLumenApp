@@ -4,6 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -14,6 +19,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +34,7 @@ import com.elumenapp.elumenapp.database.com.MySingleton;
 import com.elumenapp.elumenapp.person.com.RecyclerActivity;
 import com.elumenapp.elumenapp.quiz.com.StartQuizActivity;
 
+import java.math.BigDecimal;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -60,6 +67,8 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    public static boolean sharedCondition = false;
+
     public class CheckingConnection implements Runnable {
         @Override
         public void run() {
@@ -81,6 +90,19 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void setSharedPreferences(){
+        SharedPreferences sp = getSharedPreferences("shared", MODE_PRIVATE);
+        byte[] decodedString = Base64.decode(sp.getString("image", ""), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        Drawable drawable = new BitmapDrawable(getResources(), decodedByte);
+        RecyclerActivity.setCurrentPerson(sp.getString("username", ""), drawable, new BigDecimal(sp.getFloat("total_score", 0)), sp.getString("password", ""), sp.getString("description", ""), sp.getString("name", ""), sp.getString("lastname", ""), sp.getString("email", ""));
+        if(!sp.getString("username", "").equals("")){
+            sharedCondition = true;
+        }else{
+            sharedCondition = false;
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +116,8 @@ public class MainActivity extends AppCompatActivity
         CheckingConnection checkingConnection = new CheckingConnection();
         executorService.execute(checkingConnection);
         executorService.shutdown();
+
+        setSharedPreferences();
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeButtonEnabled(true);
@@ -175,7 +199,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void startQuizButtonListener(View view) {
-        if (logging || server_error) {
+        if (logging || server_error || sharedCondition) {
             startActivity(new Intent(MainActivity.this, StartQuizActivity.class));
         } else {
             Toast.makeText(MainActivity.this, "You are not log in!!!", Toast.LENGTH_LONG).show();

@@ -3,6 +3,7 @@ package com.elumenapp.elumenapp.database.com;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -38,25 +40,59 @@ public class LogInActivity extends AppCompatActivity {
     private AlertDialog.Builder alertBuilder;
     private final String login_url = "http://ivangudicek.comli.com/login.php";
     private static String staticMessage = null;
+    private CheckBox checkBox;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        loginPassword = (EditText)findViewById(R.id.loginPassword);
-        loginUser = (EditText)findViewById(R.id.loginUser);
+        loginPassword = (EditText) findViewById(R.id.loginPassword);
+        loginUser = (EditText) findViewById(R.id.loginUser);
+        checkBox = (CheckBox) findViewById(R.id.rememberCheckBox);
     }
 
 
-    public void logInButtonListener(View view){
+    public void saveUser(String username, String image, Double total_score, String password, String description, String name, String lastname, String email) {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("name", name);
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.putString("lastname", lastname);
+        editor.putString("email", email);
+        editor.putString("description", description);
+        editor.putFloat("total_score", total_score.floatValue());
+        editor.putString("image", image);
+        editor.commit();
+        MainActivity.logging = true;
+    }
+
+    public void clearUser() {
+       // RecyclerActivity.setCurrentPerson(null, null, null, null, null, null, null, null);
+        MainActivity.logging = false;
+        SharedPreferences sharedPreferences = getSharedPreferences("shared", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("name", "");
+        editor.putString("username", "");
+        editor.putString("password", "");
+        editor.putString("lastname", "");
+        editor.putString("email", "");
+        editor.putString("description", "");
+        editor.putFloat("total_score", 0);
+        editor.putString("image", "");
+        editor.commit();
+    }
+
+
+    public void logInButtonListener(View view) {
         user = loginUser.getText().toString();
         password = loginPassword.getText().toString();
         if (!MainActivity.connecting) {
             Toast.makeText(this, "No internet connection!!!", Toast.LENGTH_LONG).show();
-        } else if(user.equals("") || password.equals("")){
+        } else if (user.equals("") || password.equals("")) {
             displayAlert("null");
-        }else{
+        } else {
             final StringRequest stringRequest = new StringRequest(Request.Method.POST, login_url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -74,6 +110,13 @@ public class LogInActivity extends AppCompatActivity {
                         RecyclerActivity.setCurrentPerson(jsonObject.getString("username"), drawable, new BigDecimal(jsonObject.getDouble("total_score")), jsonObject.getString("password"),
                                 jsonObject.getString("description"), jsonObject.getString("name"), jsonObject.getString("lastname"),
                                 jsonObject.getString("email"));
+                        if (checkBox.isChecked()) {
+                            saveUser(jsonObject.getString("username"), string, jsonObject.getDouble("total_score"), jsonObject.getString("password"),
+                                    jsonObject.getString("description"), jsonObject.getString("name"), jsonObject.getString("lastname"),
+                                    jsonObject.getString("email"));
+                        } else {
+                            clearUser();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -88,7 +131,7 @@ public class LogInActivity extends AppCompatActivity {
                     MainActivity.server_error = true;
                     finish();
                 }
-            }){
+            }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
@@ -102,24 +145,27 @@ public class LogInActivity extends AppCompatActivity {
     }
 
 
-    public void displayAlert(String string){
+    public void displayAlert(String string) {
         alertBuilder = new AlertDialog.Builder(this);
-        switch(string){
-            case "null":{
+        switch (string) {
+            case "null": {
                 alertBuilder.setTitle("warning");
                 alertBuilder.setMessage("You must fill the fields");
                 MainActivity.logging = false;
-            }break;
-            case "login_failed":{
+            }
+            break;
+            case "login_failed": {
                 alertBuilder.setTitle("warning");
                 alertBuilder.setMessage(staticMessage);
                 MainActivity.logging = false;
-            }break;
-            default:{
+            }
+            break;
+            default: {
                 MainActivity.logging = true;
                 startActivity(new Intent(LogInActivity.this, MainActivity.class));
                 Toast.makeText(this, "You are successfully logging :)", Toast.LENGTH_LONG).show();
-            }break;
+            }
+            break;
         }
         alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -134,7 +180,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
 
-    public void goToRegisterActivityButtonListener(View view){
+    public void goToRegisterActivityButtonListener(View view) {
         startActivity(new Intent(LogInActivity.this, RegisterActivity.class));
     }
 }
