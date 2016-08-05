@@ -59,6 +59,8 @@ public class RecyclerActivity extends AppCompatActivity {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            Toast.makeText(RecyclerActivity.this, "Something went wrong on the server...", Toast.LENGTH_LONG).show();
+            Toast.makeText(RecyclerActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -67,25 +69,32 @@ public class RecyclerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_recycler);
-            parsePersonsFromJSON();
-            recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
-            adapter = new RecyclerAdapter(listOfPersons);
-            recyclerView.setHasFixedSize(true);
-            linearLayoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(linearLayoutManager);
-            recyclerView.setAdapter(adapter);
-            recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    currentPerson.setCurrentPerson(listOfPersons.get(position));
-                    startActivity(new Intent(RecyclerActivity.this, PersonActivity.class));
-                }
-                @Override
-                public void onLongItemClick(View view, int position) {
-                    String umetni = listOfPersons.get(position).getName() + ", " + listOfPersons.get(position).getLastname();
-                    Toast.makeText(RecyclerActivity.this, umetni, Toast.LENGTH_LONG).show();
-                }
-            }));
+            try{
+                setContentView(R.layout.activity_recycler);
+                parsePersonsFromJSON();
+                recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
+                adapter = new RecyclerAdapter(listOfPersons);
+                recyclerView.setHasFixedSize(true);
+                linearLayoutManager = new LinearLayoutManager(this);
+                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setAdapter(adapter);
+                recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        currentPerson.setCurrentPerson(listOfPersons.get(position));
+                        startActivity(new Intent(RecyclerActivity.this, PersonActivity.class));
+                    }
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+                        String umetni = listOfPersons.get(position).getName() + ", " + listOfPersons.get(position).getLastname();
+                        Toast.makeText(RecyclerActivity.this, umetni, Toast.LENGTH_LONG).show();
+                    }
+                }));
+            }catch (RuntimeException e){
+                e.printStackTrace();
+                Toast.makeText(RecyclerActivity.this, "Something went wrong on the server...", Toast.LENGTH_LONG).show();
+                Toast.makeText(RecyclerActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
+            }
+
     }
 }

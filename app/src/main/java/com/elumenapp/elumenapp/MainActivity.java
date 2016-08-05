@@ -20,9 +20,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -31,6 +36,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.elumenapp.elumenapp.database.com.LogInActivity;
 import com.elumenapp.elumenapp.database.com.MySingleton;
+import com.elumenapp.elumenapp.person.com.PersonActivity;
 import com.elumenapp.elumenapp.person.com.RecyclerActivity;
 import com.elumenapp.elumenapp.quiz.com.StartQuizActivity;
 
@@ -56,10 +62,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onResponse(String response) {
                 response_persons = response;
+                server_error = false;
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                server_error = true;
                 error.printStackTrace();
             }
         });
@@ -108,6 +116,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -130,10 +139,103 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+
+        RelativeLayout relativeLayout = (RelativeLayout)findViewById(R.id.contentMainRelativeLayout);
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View childRelativeLayout, childLinearLayout;
+        if(sharedCondition){
+            childRelativeLayout = inflater.inflate(R.layout.content_main_login, (ViewGroup)findViewById(R.id.contentLoginRelativeLayout));
+            childLinearLayout = inflater.inflate(R.layout.nav_login, (ViewGroup)findViewById(R.id.navLoginLinearLayout));
+        }else{
+            childLinearLayout = inflater.inflate(R.layout.nav_logout, (ViewGroup)findViewById(R.id.navLogoutLinearLayout));
+            childRelativeLayout = inflater.inflate(R.layout.content_main_logout, (ViewGroup)findViewById(R.id.contentLogoutRelativeLayout));
+        }
+        relativeLayout.removeAllViews();
+        relativeLayout.addView(childRelativeLayout);
+
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        //navigationView.removeAllViews();
+        navigationView.addView(childLinearLayout);
+        personFullName = (TextView)findViewById(R.id.personFullName);
+        personUsername = (TextView)findViewById(R.id.personUsername);
+        personImageView = (ImageView)findViewById(R.id.personImageView);
+        personFullName.setText(RecyclerActivity.getCurrentPerson().getName() + " " + RecyclerActivity.getCurrentPerson().getLastname());
+        personUsername.setText(RecyclerActivity.getCurrentPerson().getUsername());
+        personImageView.setImageDrawable(RecyclerActivity.getCurrentPerson().getDrawable());
+
     }
 
+    private TextView personUsername, personFullName;
+    private ImageView personImageView;
+
+
+    public void startQuizButtonListener(View view) {
+        if (logging || server_error || sharedCondition) {
+            startActivity(new Intent(MainActivity.this, StartQuizActivity.class));
+        } else {
+            Toast.makeText(MainActivity.this, "You are not log in!!!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void profileButtonListener(View view){
+        startActivity(new Intent(MainActivity.this, PersonActivity.class));
+    }
+
+    public void signUpButtonListener(View view) {
+        startActivity(new Intent(MainActivity.this, LogInActivity.class));
+    }
+
+    public void listOfPersonsButtonListener(View view) {
+        if (server_error) {
+            Toast.makeText(MainActivity.this, "Something went wrong on the server...", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
+        }else if(connecting){
+            startActivity(new Intent(MainActivity.this, RecyclerActivity.class));
+        }
+            else
+        {
+            Toast.makeText(this, "No internet connection!!!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void settingsButtonListener(View view) {
+        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+    }
+
+    public void aboutButtonListener(View view) {
+        startActivity(new Intent(MainActivity.this, AboutActivity.class));
+    }
+
+    public void exitButtonListener(View view) {
+        globalView = view;
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle("are you sure");
+        builder.setMessage("Do you wanna exit of app?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
     @Override
     public void onBackPressed() {
@@ -196,61 +298,5 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public void startQuizButtonListener(View view) {
-        if (logging || server_error || sharedCondition) {
-            startActivity(new Intent(MainActivity.this, StartQuizActivity.class));
-        } else {
-            Toast.makeText(MainActivity.this, "You are not log in!!!", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void signUpButtonListener(View view) {
-        startActivity(new Intent(MainActivity.this, LogInActivity.class));
-    }
-
-    public void listOfPersonsButtonListener(View view) {
-        if (connecting) {
-            startActivity(new Intent(MainActivity.this, RecyclerActivity.class));
-        } else {
-            Toast.makeText(this, "No internet connection!!!", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void settingsButtonListener(View view) {
-        startActivity(new Intent(MainActivity.this, SettingsActivity.class));
-    }
-
-    public void aboutButtonListener(View view) {
-        startActivity(new Intent(MainActivity.this, AboutActivity.class));
-    }
-
-    public void exitButtonListener(View view) {
-        globalView = view;
-        builder = new AlertDialog.Builder(this);
-        builder.setTitle("are you sure");
-        builder.setMessage("Do you wanna exit of app?");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                finish();
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
     }
 }
