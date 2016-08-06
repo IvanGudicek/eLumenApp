@@ -69,7 +69,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     public void clearUser() {
-       // RecyclerActivity.setCurrentPerson(null, null, null, null, null, null, null, null);
+        // RecyclerActivity.setCurrentPerson(null, null, null, null, null, null, null, null);
         MainActivity.logging = false;
         SharedPreferences sharedPreferences = getSharedPreferences("shared", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -152,27 +152,34 @@ public class LogInActivity extends AppCompatActivity {
                 alertBuilder.setTitle("warning");
                 alertBuilder.setMessage("You must fill the fields");
                 MainActivity.logging = false;
+                alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
             }
             break;
             case "login_failed": {
                 alertBuilder.setTitle("warning");
                 alertBuilder.setMessage(staticMessage);
                 MainActivity.logging = false;
+                alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                });
             }
             break;
             default: {
                 MainActivity.logging = true;
+                finish();
                 startActivity(new Intent(LogInActivity.this, MainActivity.class));
                 Toast.makeText(this, "You are successfully logging :)", Toast.LENGTH_LONG).show();
             }
             break;
         }
-        alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
         AlertDialog alertDialog = alertBuilder.create();
         alertDialog.setCancelable(false);
         alertDialog.setCanceledOnTouchOutside(false);

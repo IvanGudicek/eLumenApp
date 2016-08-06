@@ -25,7 +25,7 @@ public class StartQuizActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                startActivity(new Intent(StartQuizActivity.this, Quiz_Activity.class));
+                startActivity(new Intent(StartQuizActivity.this, QuizActivity.class));
             }
         });
     }

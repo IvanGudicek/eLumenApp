@@ -42,18 +42,18 @@ public class RecyclerActivity extends AppCompatActivity {
     }
 
 
-    public void parsePersonsFromJSON(){
+    public void parsePersonsFromJSON() {
         try {
             JSONObject jsonObject = new JSONObject(MainActivity.response_persons);
             jsonArray = jsonObject.getJSONArray("persons");
             int count = 0;
-            while (count < jsonArray.length()){
+            while (count < jsonArray.length()) {
                 JSONObject object = jsonArray.getJSONObject(count++);
                 String string = object.getString("image");
                 byte[] decodedString = Base64.decode(string, Base64.DEFAULT);
                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 Drawable drawable = new BitmapDrawable(getResources(), decodedByte);
-                listOfPersons.add(new Person(object.getString("username"), drawable, new BigDecimal(object.getDouble("total_score")),object.getString("password") ,
+                listOfPersons.add(new Person(object.getString("username"), drawable, new BigDecimal(object.getDouble("total_score")), object.getString("password"),
                         object.getString("description"), object.getString("name"), object.getString("lastname"),
                         object.getString("email")));
             }
@@ -65,36 +65,36 @@ public class RecyclerActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            try{
-                setContentView(R.layout.activity_recycler);
-                parsePersonsFromJSON();
-                recyclerView = (RecyclerView)findViewById(R.id.recycler_view);
-                adapter = new RecyclerAdapter(listOfPersons);
-                recyclerView.setHasFixedSize(true);
-                linearLayoutManager = new LinearLayoutManager(this);
-                recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setAdapter(adapter);
-                recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        currentPerson.setCurrentPerson(listOfPersons.get(position));
-                        startActivity(new Intent(RecyclerActivity.this, PersonActivity.class));
-                    }
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        String umetni = listOfPersons.get(position).getName() + ", " + listOfPersons.get(position).getLastname();
-                        Toast.makeText(RecyclerActivity.this, umetni, Toast.LENGTH_LONG).show();
-                    }
-                }));
-            }catch (RuntimeException e){
-                e.printStackTrace();
-                Toast.makeText(RecyclerActivity.this, "Something went wrong on the server...", Toast.LENGTH_LONG).show();
-                Toast.makeText(RecyclerActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
-            }
+        super.onCreate(savedInstanceState);
+        try {
+            setContentView(R.layout.activity_recycler);
+            parsePersonsFromJSON();
+            recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+            adapter = new RecyclerAdapter(listOfPersons);
+            recyclerView.setHasFixedSize(true);
+            linearLayoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(linearLayoutManager);
+            recyclerView.setAdapter(adapter);
+            recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    currentPerson.setCurrentPerson(listOfPersons.get(position));
+                    startActivity(new Intent(RecyclerActivity.this, PersonActivity.class));
+                }
+
+                @Override
+                public void onLongItemClick(View view, int position) {
+                    String umetni = listOfPersons.get(position).getName() + ", " + listOfPersons.get(position).getLastname();
+                    Toast.makeText(RecyclerActivity.this, umetni, Toast.LENGTH_LONG).show();
+                }
+            }));
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            Toast.makeText(RecyclerActivity.this, "Something went wrong on the server...", Toast.LENGTH_LONG).show();
+            Toast.makeText(RecyclerActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
+        }
 
     }
 }

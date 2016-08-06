@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:title="User preferences:">
+        <menu android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_profile"
+                android:title="go to your profile" />
+            <item
+                android:id="@+id/nav_logout"
+                android:title="Log out from app" />
+
+        </menu>
+    </item>
+
+
+    <item android:title="App preferences: ">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_tools"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Tools" />
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="About" />
+            <item
+                android:id="@+id/nav_exit"
+                android:title="Exit" />
+        </menu>
+    </item>
+
+</menu>

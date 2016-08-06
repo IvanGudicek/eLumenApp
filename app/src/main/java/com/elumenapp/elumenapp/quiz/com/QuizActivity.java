@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Quiz_Activity extends AppCompatActivity {
+public class QuizActivity extends AppCompatActivity {
 
     private AlertDialog.Builder alertBuilder;
     private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
@@ -71,7 +71,7 @@ public class Quiz_Activity extends AppCompatActivity {
 
     public void addLayout(String condition) {
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.feedbackRelativeLayout);
-        LayoutInflater inflater = (LayoutInflater) Quiz_Activity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) QuizActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View childView = null;
         if (condition.equals("positive")) {
             childView = inflater.inflate(R.layout.correct_answer, (ViewGroup) findViewById(R.id.correctAnswerRelativeLayout));
@@ -84,14 +84,14 @@ public class Quiz_Activity extends AppCompatActivity {
         relativeLayout.addView(childView);
         explanationText = (TextView) findViewById(R.id.explanationText);
         explanationText.setText(explanationString);
-        scoreTextView = (TextView)findViewById(R.id.scoreText);
+        scoreTextView = (TextView) findViewById(R.id.scoreText);
         scoreTextView.setText("Score: " + score + ", total score: " + totalScore);
     }
 
 
     public void changeLayout(boolean condition) {
         LinearLayout linearView = (LinearLayout) findViewById(R.id.linearLayout);
-        LayoutInflater inflater = (LayoutInflater) Quiz_Activity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) QuizActivity.this.getSystemService(LAYOUT_INFLATER_SERVICE);
         View childLayout;
         if (condition) {
 
@@ -193,7 +193,7 @@ public class Quiz_Activity extends AppCompatActivity {
         List<Entirety> entireties = new ArrayList<>();
         entireties.addAll(randomListOfEntirety);
         int number = randomListOfEntirety.size() - 1;
-        if(number >= 0){
+        if (number >= 0) {
             globalEntirety = globalEntirety.copyEntirety(entireties.get(number));
             explanationString = globalEntirety.getExplanation().toString();
             questionText.setText(globalEntirety.getQuestion().toString());
@@ -209,16 +209,16 @@ public class Quiz_Activity extends AppCompatActivity {
             relativeLayout.removeAllViews();
             relativeLayout.addView(childView);
             resetValuesOfAnswers();
-        }else{
+        } else {
             throwFinishAlert();
         }
 
     }
 
-    public boolean checkStrings(String string){
+    public boolean checkStrings(String string) {
         boolean bool = false;
-        for(Answer answer : globalEntirety.getCorrectAnswers()){
-            if(answer.getTextOfAnswer().equals(string)){
+        for (Answer answer : globalEntirety.getCorrectAnswers()) {
+            if (answer.getTextOfAnswer().equals(string)) {
                 bool = true;
             }
         }
@@ -226,20 +226,19 @@ public class Quiz_Activity extends AppCompatActivity {
     }
 
 
-
-
     public void changeLayoutOfAnswer() {
         if (globalEntirety.getCorrectAnswers().size() > 1) {
             for (CheckBox checkBox : listOfCheckBoxes) {
-                    if (checkStrings(checkBox.getText().toString())) {
-                        checkBox.setBackgroundColor(getResources().getColor(R.color.correctColor));
-                    } else{
-                        checkBox.setBackgroundColor(getResources().getColor(R.color.incorrectColor));
-                    }
-            }for (CheckBox checkBox : listOfUnCheckboxes) {
+                if (checkStrings(checkBox.getText().toString())) {
+                    checkBox.setBackgroundColor(getResources().getColor(R.color.correctColor));
+                } else {
+                    checkBox.setBackgroundColor(getResources().getColor(R.color.incorrectColor));
+                }
+            }
+            for (CheckBox checkBox : listOfUnCheckboxes) {
                 if (checkStrings(checkBox.getText().toString())) {
                     checkBox.setBackgroundColor(getResources().getColor(R.color.neutralColor));
-                }else{
+                } else {
                     checkBox.setBackgroundColor(getResources().getColor(R.color.none));
                 }
             }
@@ -247,10 +246,11 @@ public class Quiz_Activity extends AppCompatActivity {
             for (RadioButton radioButton : listOfRadioButtons) {
                 if (checkStrings(radioButton.getText().toString())) {
                     radioButton.setBackgroundColor(getResources().getColor(R.color.correctColor));
-                } else{
+                } else {
                     radioButton.setBackgroundColor(getResources().getColor(R.color.incorrectColor));
                 }
-            }for (RadioButton radioButton : listOfUnRadioButtons) {
+            }
+            for (RadioButton radioButton : listOfUnRadioButtons) {
                 if (checkStrings(radioButton.getText().toString())) {
                     radioButton.setBackgroundColor(getResources().getColor(R.color.neutralColor));
                 }
@@ -273,27 +273,27 @@ public class Quiz_Activity extends AppCompatActivity {
         if (numberOfCorrectAnswers > 1) {
             if (checkBox1.isChecked()) {
                 listOfCheckBoxes.add(checkBox1);
-            }else{
+            } else {
                 listOfUnCheckboxes.add(checkBox1);
             }
             if (checkBox2.isChecked()) {
                 listOfCheckBoxes.add(checkBox2);
-            }else{
+            } else {
                 listOfUnCheckboxes.add(checkBox2);
             }
             if (checkBox3.isChecked()) {
                 listOfCheckBoxes.add(checkBox3);
-            }else{
+            } else {
                 listOfUnCheckboxes.add(checkBox3);
             }
             if (checkBox4.isChecked()) {
                 listOfCheckBoxes.add(checkBox4);
-            }else{
+            } else {
                 listOfUnCheckboxes.add(checkBox4);
             }
             if (checkBox5.isChecked()) {
                 listOfCheckBoxes.add(checkBox5);
-            }else{
+            } else {
                 listOfUnCheckboxes.add(checkBox5);
             }
             for (CheckBox checkBox : listOfCheckBoxes) {
@@ -318,22 +318,22 @@ public class Quiz_Activity extends AppCompatActivity {
         } else {
             if (radioButton1.isChecked()) {
                 listOfRadioButtons.add(radioButton1);
-            }else{
+            } else {
                 listOfUnRadioButtons.add(radioButton1);
             }
             if (radioButton2.isChecked()) {
                 listOfRadioButtons.add(radioButton2);
-            }else{
+            } else {
                 listOfUnRadioButtons.add(radioButton2);
             }
             if (radioButton3.isChecked()) {
                 listOfRadioButtons.add(radioButton3);
-            }else{
+            } else {
                 listOfUnRadioButtons.add(radioButton3);
             }
             if (radioButton4.isChecked()) {
                 listOfRadioButtons.add(radioButton4);
-            }else{
+            } else {
                 listOfUnRadioButtons.add(radioButton4);
             }
             for (RadioButton radioButton : listOfRadioButtons) {
@@ -379,8 +379,6 @@ public class Quiz_Activity extends AppCompatActivity {
     }
 
 
-
-
     public void submitAnswerButtonListener(View view) {
         addLayout(getInformationOfAnswer());
         changeLayoutOfAnswer();
@@ -388,16 +386,16 @@ public class Quiz_Activity extends AppCompatActivity {
     }
 
     public void exitOfQuizButtonListener(View view) {
-        alertBuilder = new AlertDialog.Builder(Quiz_Activity.this);
+        alertBuilder = new AlertDialog.Builder(QuizActivity.this);
         alertBuilder.setTitle("question");
         alertBuilder.setMessage("Are you sure you wanna quit?");
 
-        LayoutInflater inflater = Quiz_Activity.this.getLayoutInflater();
+        LayoutInflater inflater = QuizActivity.this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.rating, null);
         alertBuilder.setView(dialogView);
-        ratingText = (TextView)dialogView.findViewById(R.id.mediumText);
+        ratingText = (TextView) dialogView.findViewById(R.id.mediumText);
         ratingText.setText("Your score is: ");
-        ratingBar = (RatingBar)dialogView.findViewById(R.id.ratingBar);
+        ratingBar = (RatingBar) dialogView.findViewById(R.id.ratingBar);
         ratingBar.setStepSize((float) 0.01);
         ratingBar.setRating(totalScore.floatValue());
         ratingBar.setEnabled(false);
@@ -407,7 +405,7 @@ public class Quiz_Activity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 BigDecimal score = RecyclerActivity.getCurrentPerson().getTotalScore();
                 RecyclerActivity.getCurrentPerson().setTotalScore(score.add(totalScore));
-                startActivity(new Intent(Quiz_Activity.this, MainActivity.class));
+                startActivity(new Intent(QuizActivity.this, MainActivity.class));
                 finish();
             }
         }).setNegativeButton("Nooo bro ;)", new DialogInterface.OnClickListener() {
@@ -438,7 +436,7 @@ public class Quiz_Activity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
@@ -449,20 +447,20 @@ public class Quiz_Activity extends AppCompatActivity {
                 return params;
             }
         };
-        MySingleton.getInstance(Quiz_Activity.this).addToRequestQueue(stringRequest);
+        MySingleton.getInstance(QuizActivity.this).addToRequestQueue(stringRequest);
     }
 
-    public void throwFinishAlert(){
-        alertBuilder = new AlertDialog.Builder(Quiz_Activity.this);
+    public void throwFinishAlert() {
+        alertBuilder = new AlertDialog.Builder(QuizActivity.this);
         alertBuilder.setTitle("you are fininshed quiz");
         alertBuilder.setMessage("Congratulation");
 
-        LayoutInflater inflater = Quiz_Activity.this.getLayoutInflater();
+        LayoutInflater inflater = QuizActivity.this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.rating, null);
         alertBuilder.setView(dialogView);
-        ratingText = (TextView)dialogView.findViewById(R.id.mediumText);
+        ratingText = (TextView) dialogView.findViewById(R.id.mediumText);
         ratingText.setText("Your score is: ");
-        ratingBar = (RatingBar)dialogView.findViewById(R.id.ratingBar);
+        ratingBar = (RatingBar) dialogView.findViewById(R.id.ratingBar);
         ratingBar.setStepSize((float) 0.01);
         ratingBar.setRating(totalScore.floatValue());
         ratingBar.setEnabled(false);
@@ -474,7 +472,7 @@ public class Quiz_Activity extends AppCompatActivity {
                 RecyclerActivity.getCurrentPerson().setTotalScore(score.add(totalScore));
                 updateScoreToPersonDatabase();
                 finish();
-                startActivity(new Intent(Quiz_Activity.this, MainActivity.class));
+                startActivity(new Intent(QuizActivity.this, MainActivity.class));
             }
         }).setNeutralButton("cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -488,7 +486,7 @@ public class Quiz_Activity extends AppCompatActivity {
                 RecyclerActivity.getCurrentPerson().setTotalScore(score.add(totalScore));
                 updateScoreToPersonDatabase();
                 finish();
-                startActivity(new Intent(Quiz_Activity.this, StartQuizActivity.class));
+                startActivity(new Intent(QuizActivity.this, StartQuizActivity.class));
             }
         });
         AlertDialog alertDialog = alertBuilder.create();
@@ -499,7 +497,7 @@ public class Quiz_Activity extends AppCompatActivity {
 
 
     public void showAlert() {
-        alertBuilder = new AlertDialog.Builder(Quiz_Activity.this);
+        alertBuilder = new AlertDialog.Builder(QuizActivity.this);
         alertBuilder.setTitle("info");
         alertBuilder.setMessage("are you ready to start?");
         alertBuilder.setPositiveButton("Let's start!", new DialogInterface.OnClickListener() {
@@ -510,7 +508,7 @@ public class Quiz_Activity extends AppCompatActivity {
         }).setNegativeButton("give up", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(Quiz_Activity.this, StartQuizActivity.class));
+                startActivity(new Intent(QuizActivity.this, StartQuizActivity.class));
                 finish();
                 shuffleListOfEntirety();
             }

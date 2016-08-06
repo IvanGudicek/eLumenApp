@@ -44,7 +44,7 @@
         <activity android:name=".quiz.com.Radio" />
         <activity android:name=".quiz.com.Check" />
         <activity
-            android:name=".quiz.com.Quiz_Activity"
+            android:name=".quiz.com.QuizActivity"
             android:label="Quiz_Activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".person.com.PersonActivity" />
