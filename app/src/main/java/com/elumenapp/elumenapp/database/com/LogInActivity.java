@@ -119,8 +119,8 @@ public class LogInActivity extends AppCompatActivity {
                             MainActivity.server_error = false;
                             MainActivity.logging = true;
                             MainActivity.logouting = false;
-                            finish();
                             startActivity(new Intent(LogInActivity.this, MainActivity.class));
+                            finish();
                             Toast.makeText(LogInActivity.this, "You are successfully logging :)", Toast.LENGTH_LONG).show();
                         } else {
                             displayAlert(code);
@@ -162,8 +162,8 @@ public class LogInActivity extends AppCompatActivity {
                 alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
                         startActivity(getIntent());
+                        finish();
                     }
                 });
             }
@@ -175,8 +175,8 @@ public class LogInActivity extends AppCompatActivity {
                 alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
                         startActivity(getIntent());
+                        finish();
                     }
                 });
             }
@@ -191,5 +191,13 @@ public class LogInActivity extends AppCompatActivity {
 
     public void goToRegisterActivityButtonListener(View view) {
         startActivity(new Intent(LogInActivity.this, RegisterActivity.class));
+        finish();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(LogInActivity.this, MainActivity.class));
+        finish();
     }
 }

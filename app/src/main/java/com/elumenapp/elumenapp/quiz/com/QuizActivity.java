@@ -24,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.elumenapp.elumenapp.MainActivity;
 import com.elumenapp.elumenapp.R;
 import com.elumenapp.elumenapp.database.com.MySingleton;
+import com.elumenapp.elumenapp.person.com.PersonActivity;
 import com.elumenapp.elumenapp.person.com.RecyclerActivity;
 
 import java.math.BigDecimal;
@@ -40,6 +41,7 @@ public class QuizActivity extends AppCompatActivity {
     private RadioButton radioButton1, radioButton2, radioButton3, radioButton4;
     private TextView questionText;
     public TextView explanationText;
+    private static View globalView;
     private static String explanationString = new String();
     private Entirety globalEntirety = new Entirety(null, null, null, null);
     private List<Answer> answers = new ArrayList<>();
@@ -371,15 +373,18 @@ public class QuizActivity extends AppCompatActivity {
     private TextView scoreTextView;
 
     public void exitOfQuizButtonAnswerListener(View view) {
+        globalView = view;
         exitOfQuizButtonListener(view);
     }
 
     public void nextQuestionButtonAnswerListener(View view) {
+        globalView = view;
         throwNextQuestion();
     }
 
 
     public void submitAnswerButtonListener(View view) {
+        globalView = view;
         addLayout(getInformationOfAnswer());
         changeLayoutOfAnswer();
         disableButtons();
@@ -403,8 +408,8 @@ public class QuizActivity extends AppCompatActivity {
         alertBuilder.setPositiveButton("Yes please!", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                BigDecimal score = RecyclerActivity.getCurrentPerson().getTotalScore();
-                RecyclerActivity.getCurrentPerson().setTotalScore(score.add(totalScore));
+                BigDecimal score = PersonActivity.getGlobalStaticPerson().getTotalScore();
+                PersonActivity.getGlobalStaticPerson().setTotalScore(score.add(totalScore));
                 startActivity(new Intent(QuizActivity.this, MainActivity.class));
                 finish();
             }
@@ -468,11 +473,11 @@ public class QuizActivity extends AppCompatActivity {
         alertBuilder.setPositiveButton("Go to Main menu", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                BigDecimal score = RecyclerActivity.getCurrentPerson().getTotalScore();
-                RecyclerActivity.getCurrentPerson().setTotalScore(score.add(totalScore));
+                BigDecimal score = PersonActivity.getGlobalStaticPerson().getTotalScore();
+                PersonActivity.getGlobalStaticPerson().setTotalScore(score.add(totalScore));
                 updateScoreToPersonDatabase();
-                finish();
                 startActivity(new Intent(QuizActivity.this, MainActivity.class));
+                finish();
             }
         }).setNeutralButton("cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -482,11 +487,11 @@ public class QuizActivity extends AppCompatActivity {
         }).setPositiveButton("start again", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                BigDecimal score = RecyclerActivity.getCurrentPerson().getTotalScore();
-                RecyclerActivity.getCurrentPerson().setTotalScore(score.add(totalScore));
+                BigDecimal score = PersonActivity.getGlobalStaticPerson().getTotalScore();
+                PersonActivity.getGlobalStaticPerson().setTotalScore(score.add(totalScore));
                 updateScoreToPersonDatabase();
-                finish();
                 startActivity(new Intent(QuizActivity.this, StartQuizActivity.class));
+                finish();
             }
         });
         AlertDialog alertDialog = alertBuilder.create();
@@ -517,6 +522,11 @@ public class QuizActivity extends AppCompatActivity {
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.setCancelable(false);
         alertDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        exitOfQuizButtonListener(globalView);
     }
 
 

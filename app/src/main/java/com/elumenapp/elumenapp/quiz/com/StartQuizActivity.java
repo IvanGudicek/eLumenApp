@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
+import com.elumenapp.elumenapp.MainActivity;
 import com.elumenapp.elumenapp.R;
 
 public class StartQuizActivity extends AppCompatActivity {
@@ -20,16 +21,20 @@ public class StartQuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start_quiz);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        button = (Button)findViewById(R.id.startQuizButton);
+        button = (Button) findViewById(R.id.startQuizButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
                 startActivity(new Intent(StartQuizActivity.this, QuizActivity.class));
+                finish();
             }
         });
     }
 
-
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(StartQuizActivity.this, MainActivity.class));
+        finish();
+    }
 
 }

@@ -1,7 +1,6 @@
 package com.elumenapp.elumenapp.person.com;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 import com.elumenapp.elumenapp.MainActivity;
 import com.elumenapp.elumenapp.R;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +26,9 @@ public class RecyclerActivity extends AppCompatActivity {
         return currentPerson;
     }
 
-    public static void setCurrentPerson(String username, Drawable drawable, BigDecimal bigDecimal, String password, String description, String name, String lastname, String email) {
-        currentPerson = new Person(username, drawable, bigDecimal, password, description, name, lastname, email);
+    public static void setCurrentPerson(Person person) {
+        currentPerson.setCurrentPerson(person);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +48,12 @@ public class RecyclerActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                currentPerson.setCurrentPerson(listOfPersons.get(position));
-                startActivity(new Intent(RecyclerActivity.this, PersonActivity.class));
+                PersonRecyclerActivity.setCurrentRecyclerPerson(listOfPersons.get(position));
+                if (PersonActivity.getGlobalStaticPerson().getUsername().equals(PersonRecyclerActivity.getCurrentRecyclerPerson().getUsername())) {
+                    startActivity(new Intent(RecyclerActivity.this, PersonActivity.class));
+                } else {
+                    startActivity(new Intent(RecyclerActivity.this, PersonRecyclerActivity.class));
+                }
             }
 
             @Override

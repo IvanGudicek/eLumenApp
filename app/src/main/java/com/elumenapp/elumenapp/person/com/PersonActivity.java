@@ -20,7 +20,6 @@ public class PersonActivity extends AppCompatActivity {
 
     private static Person globalStaticPerson = new Person(null, null, null, null, null, null, null, null);
 
-
     public static void setGlobalStaticPerson(String username, Drawable drawable, BigDecimal bigDecimal, String password, String description, String name, String lastname, String email) {
         globalStaticPerson = new Person(username, drawable, bigDecimal, password, description, name, lastname, email);
     }

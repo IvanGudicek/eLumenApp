@@ -199,6 +199,12 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(RegisterActivity.this, LogInActivity.class));
+        finish();
+    }
+
 
     public void displayAlert(final String code) {
         alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {

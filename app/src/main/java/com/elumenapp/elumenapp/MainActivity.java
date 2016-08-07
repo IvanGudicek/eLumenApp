@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
     private static final String persons_url = "http://ivangudicek.comli.com/persons.php";
     public static boolean server_error = false, sharedPreferences = false;
     private static List<Person> listOfPersons = new ArrayList<>();
-    public static String server_response = null;
+
 
     public static List<Person> getListOfPersons() {
         return listOfPersons;
@@ -209,7 +209,6 @@ public class MainActivity extends AppCompatActivity
         //getResponseFromPersons();
 
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -279,8 +278,9 @@ public class MainActivity extends AppCompatActivity
 
 
     public void startQuizButtonListener(View view) {
-        if (logging || server_error) {
+        if (connecting && !server_error && (logging || sharedPreferences && !logouting)) {
             startActivity(new Intent(MainActivity.this, StartQuizActivity.class));
+            finish();
         } else {
             Toast.makeText(MainActivity.this, "You are not log in!!!", Toast.LENGTH_LONG).show();
         }
@@ -292,6 +292,7 @@ public class MainActivity extends AppCompatActivity
 
     public void signUpButtonListener(View view) {
         startActivity(new Intent(MainActivity.this, LogInActivity.class));
+        finish();
     }
 
     public void listOfPersonsButtonListener(View view) {
@@ -343,6 +344,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
         AlertDialog alertDialog = builder.create();
+        alertDialog.setCancelable(false);
         alertDialog.show();
     }
 
@@ -353,10 +355,12 @@ public class MainActivity extends AppCompatActivity
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
             } else {
-                super.onBackPressed();
+                //super.onBackPressed();
+                exitButtonListener(drawer);
             }
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -390,8 +394,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_logout:
                 logging = false;
                 logouting = true;
-                finish();
                 startActivity(getIntent());
+                finish();
                 break;
             case R.id.action_exit:
                 exitButtonListener(globalView);
@@ -410,14 +414,14 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
             case R.id.nav_login:
-                finish();
                 startActivity(new Intent(MainActivity.this, LogInActivity.class));
+                finish();
                 break;
             case R.id.nav_logout:
                 logging = false;
                 logouting = true;
-                finish();
                 startActivity(getIntent());
+                finish();
                 break;
             case R.id.nav_profile:
                 startActivity(new Intent(MainActivity.this, PersonActivity.class));
@@ -438,4 +442,6 @@ public class MainActivity extends AppCompatActivity
         }
         return true;
     }
+
+
 }

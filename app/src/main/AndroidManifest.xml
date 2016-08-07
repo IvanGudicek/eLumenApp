@@ -2,11 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.elumenapp.elumenapp">
 
-    <uses-feature android:name="android.hardware.camera2" android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -49,7 +51,8 @@
         <activity android:name=".person.com.PersonActivity" />
         <activity android:name=".database.com.RegisterActivity" />
         <activity android:name=".database.com.LogInActivity" />
-        <activity android:name=".person.com.RecyclerActivity"></activity>
+        <activity android:name=".person.com.RecyclerActivity" />
+        <activity android:name=".person.com.PersonRecyclerActivity"></activity>
     </application>
 
 </manifest>
