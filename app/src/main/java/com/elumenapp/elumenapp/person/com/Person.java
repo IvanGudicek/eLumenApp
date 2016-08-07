@@ -4,9 +4,6 @@ import android.graphics.drawable.Drawable;
 
 import java.math.BigDecimal;
 
-/**
- * Created by IvanGudiček on 7/29/2016.
- */
 public class Person {
     private String username;
     private String password;
@@ -18,7 +15,7 @@ public class Person {
     private BigDecimal totalScore = new BigDecimal(0.00);
 
 
-    public void setCurrentPerson(Person person){
+    public void setCurrentPerson(Person person) {
         this.username = person.username;
         this.drawable = person.drawable;
         this.totalScore = person.totalScore;
@@ -38,6 +35,21 @@ public class Person {
         this.name = name;
         this.lastname = lastname;
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Person{");
+        sb.append("username='").append(username).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", lastname='").append(lastname).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", drawable=").append(drawable);
+        sb.append(", totalScore=").append(totalScore);
+        sb.append('}');
+        return sb.toString();
     }
 
     public Drawable getDrawable() {

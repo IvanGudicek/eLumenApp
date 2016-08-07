@@ -37,14 +37,20 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
 
     private final static String register_url = "http://ivangudicek.comli.com/register.php";
-    private ImageView ivCamera, ivGallery, ivImage;
+    private ImageView ivImage;
     private AlertDialog.Builder alertBuilder;
     private CameraPhoto cameraPhoto;
     private GalleryPhoto galleryPhoto;
     final int CAMERA_REQUEST = 13323;
     final int GALLERY_REQUEST = 22131;
     private EditText editUsername, editName, editLastname, editPassword, editCheck_password, editDescription, editEmail;
-    private String name, username, lastname, password, check_password, description, email, image_string = null;
+    private String name;
+    private String username;
+    private String lastname;
+    private String password;
+    private String description;
+    private String email;
+    private String image_string = null;
 
 
     @Override
@@ -91,36 +97,41 @@ public class RegisterActivity extends AppCompatActivity {
         cameraPhoto = new CameraPhoto(getApplicationContext());
         galleryPhoto = new GalleryPhoto(getApplicationContext());
         ivImage = (ImageView) findViewById(R.id.ivImage);
-        ivCamera = (ImageView) findViewById(R.id.ivCamera);
-        ivGallery = (ImageView) findViewById(R.id.ivGallery);
-        ivCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
-                    cameraPhoto.addToGallery();
-                } catch (IOException e) {
-                    Toast.makeText(getApplicationContext(),
-                            "Something Wrong while taking photos", Toast.LENGTH_SHORT).show();
+        ImageView ivCamera = (ImageView) findViewById(R.id.ivCamera);
+        ImageView ivGallery = (ImageView) findViewById(R.id.ivGallery);
+        if (ivCamera != null) {
+            ivCamera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        startActivityForResult(cameraPhoto.takePhotoIntent(), CAMERA_REQUEST);
+                        cameraPhoto.addToGallery();
+                    } catch (IOException e) {
+                        Toast.makeText(getApplicationContext(),
+                                "Something Wrong while taking photos", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
-        });
-        ivGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
-            }
-        });
+            });
+        }
+        if (ivGallery != null) {
+            ivGallery.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivityForResult(galleryPhoto.openGalleryIntent(), GALLERY_REQUEST);
+                }
+            });
+        }
     }
 
 
     public void registerButtonListener(View view) {
+        MainActivity.getConnectionInfo(RegisterActivity.this);
         alertBuilder = new AlertDialog.Builder(this);
         name = editName.getText().toString();
         lastname = editLastname.getText().toString();
         username = editUsername.getText().toString();
         password = editPassword.getText().toString();
-        check_password = editCheck_password.getText().toString();
+        String check_password = editCheck_password.getText().toString();
         email = editEmail.getText().toString();
         description = editDescription.getText().toString();
 
