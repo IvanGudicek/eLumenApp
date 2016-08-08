@@ -51,6 +51,7 @@ public class RecyclerActivity extends AppCompatActivity {
                 PersonRecyclerActivity.setCurrentRecyclerPerson(listOfPersons.get(position));
                 if (PersonActivity.getGlobalStaticPerson().getUsername().equals(PersonRecyclerActivity.getCurrentRecyclerPerson().getUsername())) {
                     startActivity(new Intent(RecyclerActivity.this, PersonActivity.class));
+                    finish();
                 } else {
                     startActivity(new Intent(RecyclerActivity.this, PersonRecyclerActivity.class));
                 }

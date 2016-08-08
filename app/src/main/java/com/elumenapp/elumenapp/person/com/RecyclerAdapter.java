@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by IvanGudiček on 7/29/2016.
  */
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder>{
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
     private List<Person> dataList;
 
 
@@ -27,8 +27,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
         this.dataList = dataList;
     }
 
-    public RecyclerAdapter(List<Person> dataList)
-    {
+    public RecyclerAdapter(List<Person> dataList) {
         this.dataList = dataList;
     }
 
@@ -36,8 +35,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     @Override
     public RecyclerAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_layout, parent, false);
-        RecyclerViewHolder recyclerViewHolder1 = new RecyclerViewHolder(view);
-        return recyclerViewHolder1;
+        return new RecyclerViewHolder(view);
     }
 
     @Override
@@ -67,9 +65,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            imageView = (ImageView)itemView.findViewById(R.id.itemImageView);
-            username = (TextView)itemView.findViewById(R.id.itemUsername);
-            ratingBar = (RatingBar)itemView.findViewById(R.id.itemRatingBar);
+            imageView = (ImageView) itemView.findViewById(R.id.itemImageView);
+            username = (TextView) itemView.findViewById(R.id.itemUsername);
+            ratingBar = (RatingBar) itemView.findViewById(R.id.itemRatingBar);
             ratingBar.setEnabled(false);
         }
     }

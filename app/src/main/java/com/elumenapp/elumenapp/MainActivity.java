@@ -116,46 +116,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void getResponseFromPersons() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, persons_url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                server_error = false;
-                JSONArray jsonArray;
-                listOfPersons = new ArrayList<>();
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    jsonArray = jsonObject.getJSONArray("persons");
-                    int count = 0;
-                    while (count < jsonArray.length()) {
-                        JSONObject object = jsonArray.getJSONObject(count++);
-                        String string = object.getString("image");
-                        byte[] decodedString = Base64.decode(string, Base64.DEFAULT);
-                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        Drawable drawable = new BitmapDrawable(getResources(), decodedByte);
-                        listOfPersons.add(new Person(object.getString("username"), drawable, new BigDecimal(object.getDouble("total_score")), object.getString("password"),
-                                object.getString("description"), object.getString("name"), object.getString("lastname"),
-                                object.getString("email")));
-                        MainActivity.server_error = false;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    MainActivity.server_error = true;
-                } catch (NullPointerException e) {
-                    e.printStackTrace();
-                    MainActivity.server_error = true;
-                }
-            }
 
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                server_error = true;
-                error.printStackTrace();
-            }
-        });
-        MySingleton.getInstance(MainActivity.this).addToRequestQueue(stringRequest);
-    }
 
     public void setSharedPreferences() {
         SharedPreferences sp = getSharedPreferences("shared", MODE_PRIVATE);
@@ -388,13 +349,13 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
             case R.id.action_login:
-                finish();
                 startActivity(new Intent(MainActivity.this, LogInActivity.class));
+                finish();
                 break;
             case R.id.action_logout:
                 logging = false;
                 logouting = true;
-                startActivity(getIntent());
+                startActivity(new Intent(MainActivity.this, MainActivity.class));
                 finish();
                 break;
             case R.id.action_exit:
@@ -420,7 +381,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_logout:
                 logging = false;
                 logouting = true;
-                startActivity(getIntent());
+                startActivity(new Intent(MainActivity.this, MainActivity.class));
                 finish();
                 break;
             case R.id.nav_profile:
