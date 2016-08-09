@@ -40,6 +40,8 @@ import com.elumenapp.elumenapp.person.com.Person;
 import com.elumenapp.elumenapp.person.com.PersonActivity;
 import com.elumenapp.elumenapp.person.com.RecyclerActivity;
 import com.elumenapp.elumenapp.quiz.com.StartQuizActivity;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -117,7 +119,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     public void setSharedPreferences() {
         SharedPreferences sp = getSharedPreferences("shared", MODE_PRIVATE);
         byte[] decodedString = Base64.decode(sp.getString("image", ""), Base64.DEFAULT);
@@ -160,6 +161,10 @@ public class MainActivity extends AppCompatActivity
         executorService.execute(threadServerPerson);
         executorService.shutdown();
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
+
         getConnectionInfo(MainActivity.this);
         setSharedPreferences();
         if (connecting && !server_error && (logging || sharedPreferences && !logouting)) {
@@ -355,8 +360,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_logout:
                 logging = false;
                 logouting = true;
-                startActivity(new Intent(MainActivity.this, MainActivity.class));
                 finish();
+                startActivity(getIntent());
                 break;
             case R.id.action_exit:
                 exitButtonListener(globalView);
@@ -381,8 +386,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_logout:
                 logging = false;
                 logouting = true;
-                startActivity(new Intent(MainActivity.this, MainActivity.class));
                 finish();
+                startActivity(getIntent());
                 break;
             case R.id.nav_profile:
                 startActivity(new Intent(MainActivity.this, PersonActivity.class));
