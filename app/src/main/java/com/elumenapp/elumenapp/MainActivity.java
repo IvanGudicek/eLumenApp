@@ -40,8 +40,6 @@ import com.elumenapp.elumenapp.person.com.Person;
 import com.elumenapp.elumenapp.person.com.PersonActivity;
 import com.elumenapp.elumenapp.person.com.RecyclerActivity;
 import com.elumenapp.elumenapp.quiz.com.StartQuizActivity;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -162,8 +160,10 @@ public class MainActivity extends AppCompatActivity
         executorService.shutdown();
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
+        //FacebookSdk.sdkInitialize(getApplicationContext());
+       // AppEventsLogger.activateApp(this);
+
+
 
         getConnectionInfo(MainActivity.this);
         setSharedPreferences();

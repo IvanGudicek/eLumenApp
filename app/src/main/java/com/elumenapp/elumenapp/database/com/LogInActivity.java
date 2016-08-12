@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.elumenapp.elumenapp.MainActivity;
 import com.elumenapp.elumenapp.R;
+import com.elumenapp.elumenapp.facebook.com.FacebookMainActivity;
 import com.elumenapp.elumenapp.person.com.PersonActivity;
 
 import org.json.JSONArray;
@@ -39,6 +41,7 @@ public class LogInActivity extends AppCompatActivity {
     private String user, password;
     private static String staticMessage = null;
     private CheckBox checkBox;
+    private Button facebookButton;
 
 
     @Override
@@ -48,6 +51,17 @@ public class LogInActivity extends AppCompatActivity {
         loginPassword = (EditText) findViewById(R.id.loginPassword);
         loginUser = (EditText) findViewById(R.id.loginUser);
         checkBox = (CheckBox) findViewById(R.id.rememberCheckBox);
+
+        facebookButton = (Button) findViewById(R.id.facebookButtonListener);
+        facebookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LogInActivity.this, FacebookMainActivity.class));
+                finish();
+            }
+        });
+
+
     }
 
 

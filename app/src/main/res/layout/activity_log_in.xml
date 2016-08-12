@@ -63,7 +63,6 @@
         android:text="register"
         android:onClick="goToRegisterActivityButtonListener"
         android:id="@+id/registerButton"
-        android:layout_marginBottom="44dp"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/loginButton" />
 
@@ -83,4 +82,24 @@
         android:id="@+id/rememberCheckBox"
         android:layout_below="@+id/loginPassword"
         android:layout_toEndOf="@+id/textView8" />
+
+    <Button
+        android:id="@+id/facebookButtonListener"
+        android:layout_width="wrap_content"
+        android:text="facebook"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/loginButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="or login with facebook"
+        android:id="@+id/textView20"
+        android:layout_below="@+id/loginButton"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

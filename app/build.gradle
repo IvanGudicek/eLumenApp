@@ -5,6 +5,10 @@ android {
     buildToolsVersion "23.0.3"
     useLibrary 'org.apache.http.legacy'
 
+    repositories {
+        mavenCentral()
+    }
+
     defaultConfig {
         applicationId "com.elumenapp.elumenapp"
         minSdkVersion 17
@@ -31,4 +35,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
     compile files('libs/GenAsync.1.2.jar')
     compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile "com.squareup.picasso:picasso:2.4.0"
 }
