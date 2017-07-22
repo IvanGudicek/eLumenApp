@@ -9,7 +9,7 @@
         android:layout_width="79dp"
         android:layout_height="77dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@drawable/unknown_person" />
+        android:src="@drawable/com_facebook_profile_picture_blank_square" />
 
     <TextView
         android:layout_width="match_parent"

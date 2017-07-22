@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity
 
             personUsername.setText("Please logIn :)");
 
-            personImageView.setImageResource(R.drawable.unknown_person);
+            personImageView.setImageResource(R.drawable.com_facebook_profile_picture_blank_square);
 
         }
     }
