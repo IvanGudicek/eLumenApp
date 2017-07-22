@@ -11,8 +11,6 @@ import com.elumenapp.elumenapp.MainActivity;
 import com.elumenapp.elumenapp.R;
 
 public class StartQuizActivity extends AppCompatActivity {
-
-
     private Button button;
 
     @Override

@@ -13,7 +13,6 @@ public class Entirety {
     private Explanation explanation;
 
 
-
     public Entirety(Question question, Explanation explanation, List<Answer> correctAnswers, List<Answer> incorrectAnswers) {
         this.question = question;
         this.explanation = explanation;
@@ -21,7 +20,7 @@ public class Entirety {
         this.correctAnswers = correctAnswers;
     }
 
-    public Entirety copyEntirety(Entirety entirety){
+    public Entirety copyEntirety(Entirety entirety) {
         return new Entirety(entirety.question, entirety.explanation, entirety.correctAnswers, entirety.incorrectAnswers);
     }
 
