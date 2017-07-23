@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterServerActivity extends AppCompatActivity {
 
     private final static String register_url = "http://ivangudicek.comli.com/register.php";
     private ImageView ivImage;
@@ -125,7 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     public void registerButtonListener(View view) {
-        MainActivity.getConnectionInfo(RegisterActivity.this);
+        MainActivityOld.getConnectionInfo(RegisterServerActivity.this);
         alertBuilder = new AlertDialog.Builder(this);
         name = editName.getText().toString();
         lastname = editLastname.getText().toString();
@@ -142,7 +142,7 @@ public class RegisterActivity extends AppCompatActivity {
         byte[] image = stream.toByteArray();
         image_string = Base64.encodeToString(image, 0);
 
-        if (!MainActivity.connecting) {
+        if (!MainActivityOld.connecting) {
             Toast.makeText(this, "No internet connection!!!", Toast.LENGTH_LONG).show();
         } else {
             if (name.equals("") || name.equals("") || username.equals("") || lastname.equals("") || email.equals("") || password.equals("") || check_password.equals("")) {
@@ -172,10 +172,10 @@ public class RegisterActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RegisterActivity.this, "SOmething went wrong on the server...", Toast.LENGTH_LONG).show();
-                        Toast.makeText(RegisterActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterServerActivity.this, "SOmething went wrong on the server...", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterServerActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
                         error.printStackTrace();
-                        MainActivity.server_error = true;
+                        MainActivityOld.server_error = true;
                         finish();
                     }
                 }) {
@@ -194,14 +194,14 @@ public class RegisterActivity extends AppCompatActivity {
                         return params;
                     }
                 };
-                MySingleton.getInstance(RegisterActivity.this).addToRequestQueue(stringRequest);
+                MySingleton.getInstance(RegisterServerActivity.this).addToRequestQueue(stringRequest);
             }
         }
     }
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(RegisterActivity.this, LogInActivity.class));
+        startActivity(new Intent(RegisterServerActivity.this, LogInServerActivity.class));
         finish();
     }
 

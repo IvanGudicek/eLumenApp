@@ -39,7 +39,7 @@ public class RecyclerActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
 
-        listOfPersons.addAll(MainActivity.getListOfPersons());
+        listOfPersons.addAll(MainActivityOld.getListOfPersons());
 
 
         adapter = new RecyclerAdapter(listOfPersons);

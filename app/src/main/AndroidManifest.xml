@@ -25,7 +25,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.MainActivityOld"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
@@ -34,11 +34,11 @@
         <activity
             android:name=".activities.StartQuizActivity"
             android:label="StartQuizActivity"
-            android:parentActivityName=".activities.MainActivity"
+            android:parentActivityName=".activities.MainActivityOld"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".activities.MainActivityOld" />
         </activity>
         <activity
             android:name=".activities.SettingsActivity"
@@ -50,8 +50,8 @@
             android:label="Quiz_Activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.PersonActivity" />
-        <activity android:name=".activities.RegisterActivity" />
-        <activity android:name=".activities.LogInActivity" />
+        <activity android:name=".activities.RegisterServerActivity" />
+        <activity android:name=".activities.LogInServerActivity" />
         <activity android:name=".activities.RecyclerActivity">
             <meta-data
                 android:name="android.app.searchable"
@@ -66,12 +66,21 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activities.FacebookMainActivity">
+        <activity android:name=".activities.LogInActivity">
+        </activity>
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.UserProfileActivity"/>
+
+        <provider
+            android:authorities="com.facebook.app.FacebookContentProvider"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
+
         <activity
             tools:replace="android:theme"
             android:name="com.facebook.FacebookActivity"
