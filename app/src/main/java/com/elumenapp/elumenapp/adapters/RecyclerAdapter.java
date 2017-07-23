@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.person.com;
+package com.elumenapp.elumenapp.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.elumenapp.elumenapp.R;
+import com.elumenapp.elumenapp.models.Person;
 
 import java.util.List;
 

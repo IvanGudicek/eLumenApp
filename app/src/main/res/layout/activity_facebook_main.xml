@@ -7,7 +7,7 @@
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/fragment"
-        android:name="com.elumenapp.elumenapp.facebook.com.FacebookLogInActivity"
+        android:name="com.elumenapp.elumenapp.activities.FacebookLogInActivity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/activity_facebook_log_in" />

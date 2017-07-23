@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.quiz.com;
+package com.elumenapp.elumenapp.models;
 
 import java.util.ArrayList;
 import java.util.List;

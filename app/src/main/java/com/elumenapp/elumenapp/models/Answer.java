@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.quiz.com;
+package com.elumenapp.elumenapp.models;
 
 /**
  * Created by IvanGudiček on 7/25/2016.

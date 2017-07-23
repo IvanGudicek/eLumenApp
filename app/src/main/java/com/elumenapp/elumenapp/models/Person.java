@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.person.com;
+package com.elumenapp.elumenapp.models;
 
 import android.graphics.drawable.Drawable;
 

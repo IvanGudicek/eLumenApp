@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.person.com;
+package com.elumenapp.elumenapp;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

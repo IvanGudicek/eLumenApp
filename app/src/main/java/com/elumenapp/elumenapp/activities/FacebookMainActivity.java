@@ -1,10 +1,9 @@
-package com.elumenapp.elumenapp.facebook.com;
+package com.elumenapp.elumenapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.elumenapp.elumenapp.MainActivity;
 import com.elumenapp.elumenapp.R;
 import com.facebook.FacebookSdk;
 

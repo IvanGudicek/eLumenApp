@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.database.com;
+package com.elumenapp.elumenapp.data;
 
 import android.content.Context;
 

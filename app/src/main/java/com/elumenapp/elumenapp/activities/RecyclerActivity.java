@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.person.com;
+package com.elumenapp.elumenapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import com.elumenapp.elumenapp.MainActivity;
+import com.elumenapp.elumenapp.RecyclerItemClickListener;
 import com.elumenapp.elumenapp.R;
+import com.elumenapp.elumenapp.adapters.RecyclerAdapter;
+import com.elumenapp.elumenapp.models.Person;
 
 import java.util.ArrayList;
 import java.util.List;

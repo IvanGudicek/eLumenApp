@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.person.com;
+package com.elumenapp.elumenapp.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.elumenapp.elumenapp.R;
+import com.elumenapp.elumenapp.models.Person;
 
 public class PersonRecyclerActivity extends AppCompatActivity {
 

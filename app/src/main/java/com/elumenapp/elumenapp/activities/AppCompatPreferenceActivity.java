@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp;
+package com.elumenapp.elumenapp.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

@@ -1,7 +1,9 @@
-package com.elumenapp.elumenapp;
+package com.elumenapp.elumenapp.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.elumenapp.elumenapp.R;
 
 public class AboutActivity extends AppCompatActivity {
 

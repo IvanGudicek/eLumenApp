@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.database.com;
+package com.elumenapp.elumenapp.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,10 +22,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.elumenapp.elumenapp.MainActivity;
 import com.elumenapp.elumenapp.R;
-import com.elumenapp.elumenapp.facebook.com.FacebookMainActivity;
-import com.elumenapp.elumenapp.person.com.PersonActivity;
+import com.elumenapp.elumenapp.data.MySingleton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -204,7 +202,7 @@ public class LogInActivity extends AppCompatActivity {
 
 
     public void goToRegisterActivityButtonListener(View view) {
-        startActivity(new Intent(LogInActivity.this, RegisterActivity.class));
+        startActivity(new Intent(LogInActivity.this, com.elumenapp.elumenapp.activities.RegisterActivity.class));
         finish();
     }
 

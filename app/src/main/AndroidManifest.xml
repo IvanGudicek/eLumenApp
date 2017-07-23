@@ -25,44 +25,39 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".Settings_Activity" />
-        <activity android:name=".AboutActivity" />
+        <activity android:name=".activities.Settings_Activity" />
+        <activity android:name=".activities.AboutActivity" />
         <activity
-            android:name=".quiz.com.StartQuizActivity"
+            android:name=".activities.StartQuizActivity"
             android:label="StartQuizActivity"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activities.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".quiz.com.Radio" />
-        <activity android:name=".quiz.com.Check" />
+        <activity android:name=".models.Radio" />
+        <activity android:name=".models.Check" />
         <activity
-            android:name=".quiz.com.QuizActivity"
+            android:name=".activities.QuizActivity"
             android:label="Quiz_Activity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".person.com.PersonActivity" />
-        <activity android:name=".database.com.RegisterActivity" />
-        <activity android:name=".database.com.LogInActivity" />
-        <activity android:name=".person.com.RecyclerActivity">
+        <activity android:name=".activities.PersonActivity" />
+        <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.LogInActivity" />
+        <activity android:name=".activities.RecyclerActivity">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".person.com.PersonRecyclerActivity" />
+        <activity android:name=".activities.PersonRecyclerActivity" />
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -71,15 +66,19 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".facebook.com.FacebookActivity" />
+        <activity android:name=".activities.FacebookMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             tools:replace="android:theme"
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".facebook.com.FacebookLogInActivity" />
-        <activity android:name=".facebook.com.FacebookMainActivity"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            </activity>
     </application>
 
 </manifest>

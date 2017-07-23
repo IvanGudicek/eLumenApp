@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp;
+package com.elumenapp.elumenapp.activities;
 
 
 import android.annotation.TargetApi;
@@ -19,6 +19,8 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
+
+import com.elumenapp.elumenapp.R;
 
 import java.util.List;
 

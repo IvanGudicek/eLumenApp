@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.quiz.com;
+package com.elumenapp.elumenapp.activities;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,11 +21,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.elumenapp.elumenapp.MainActivity;
 import com.elumenapp.elumenapp.R;
-import com.elumenapp.elumenapp.database.com.MySingleton;
-import com.elumenapp.elumenapp.person.com.PersonActivity;
-import com.elumenapp.elumenapp.person.com.RecyclerActivity;
+import com.elumenapp.elumenapp.data.MySingleton;
+import com.elumenapp.elumenapp.models.Answer;
+import com.elumenapp.elumenapp.models.Entirety;
+import com.elumenapp.elumenapp.models.Explanation;
+import com.elumenapp.elumenapp.models.Question;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -258,7 +259,6 @@ public class QuizActivity extends AppCompatActivity {
                 }
             }
         }
-
     }
 
     public String getInformationOfAnswer() {

@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.facebook.com;
+package com.elumenapp.elumenapp.activities;
 
 
 import android.content.Intent;
