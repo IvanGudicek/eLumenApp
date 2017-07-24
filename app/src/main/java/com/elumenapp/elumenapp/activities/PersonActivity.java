@@ -52,9 +52,9 @@ public class PersonActivity extends AppCompatActivity {
     }
 
     public void changeThePersonButtonListener(View view) {/*
-        MainActivityOld.getConnectionInfo(PersonActivity.this);
-        if (MainActivityOld.connecting && !MainActivityOld.server_error) {
-            MainActivityOld.sharedPreferences = personSwitch.isChecked();
+        MainActivity.getConnectionInfo(PersonActivity.this);
+        if (MainActivity.connecting && !MainActivity.server_error) {
+            MainActivity.sharedPreferences = personSwitch.isChecked();
             String person_server = "http://ivangudicek.comli.com/person.php";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, person_server, new Response.Listener<String>() {
                 @Override
@@ -87,19 +87,19 @@ public class PersonActivity extends AppCompatActivity {
         } else {
             Toast.makeText(PersonActivity.this, "NO internet connection or server error!!", Toast.LENGTH_LONG).show();
         }
-        startActivity(new Intent(PersonActivity.this, MainActivityOld.class));
+        startActivity(new Intent(PersonActivity.this, MainActivity.class));
         finish();
         */
     }
 
     public void discardChangesButtonListener(View view) {
-        startActivity(new Intent(PersonActivity.this, MainActivityOld.class));
+        startActivity(new Intent(PersonActivity.this, MainActivity.class));
         finish();
     }
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(PersonActivity.this, MainActivityOld.class));
+        startActivity(new Intent(PersonActivity.this, MainActivity.class));
         finish();
     }
 
@@ -121,7 +121,7 @@ public class PersonActivity extends AppCompatActivity {
         galleryPerson = (ImageView) findViewById(R.id.chooseGalleryPerson);
         imageOfPerson.setImageDrawable(globalStaticPerson.getDrawable());
         personSwitch = (Switch) findViewById(R.id.personSwitch);
-        if (MainActivityOld.sharedPreferences) {
+        if (MainActivity.sharedPreferences) {
             personSwitch.setChecked(true);
         } else {
             personSwitch.setChecked(false);

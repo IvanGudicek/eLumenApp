@@ -75,7 +75,7 @@ public class LogInServerActivity extends AppCompatActivity {
         editor.putFloat("total_score", total_score.floatValue());
         editor.putString("image", image);
         editor.commit();
-        MainActivityOld.sharedPreferences = true;
+        MainActivity.sharedPreferences = true;
     }
 
     public void clearUser() {
@@ -94,10 +94,10 @@ public class LogInServerActivity extends AppCompatActivity {
 
 
     public void logInButtonListener(View view) {
-        MainActivityOld.getConnectionInfo(LogInServerActivity.this);
+        MainActivity.getConnectionInfo(LogInServerActivity.this);
         user = loginUser.getText().toString();
         password = loginPassword.getText().toString();
-        if (!MainActivityOld.connecting) {
+        if (!MainActivity.connecting) {
             Toast.makeText(this, "No internet connection!!!", Toast.LENGTH_LONG).show();
         } else if (user.equals("") || password.equals("")) {
             displayAlert("null");
@@ -127,10 +127,10 @@ public class LogInServerActivity extends AppCompatActivity {
                             } else {
                                 clearUser();
                             }
-                            MainActivityOld.server_error = false;
-                            MainActivityOld.logging = true;
-                            MainActivityOld.logouting = false;
-                            startActivity(new Intent(LogInServerActivity.this, MainActivityOld.class));
+                            MainActivity.server_error = false;
+                            MainActivity.logging = true;
+                            MainActivity.logouting = false;
+                            startActivity(new Intent(LogInServerActivity.this, MainActivity.class));
                             finish();
                             Toast.makeText(LogInServerActivity.this, "You are successfully logging :)", Toast.LENGTH_LONG).show();
                         } else {
@@ -146,7 +146,7 @@ public class LogInServerActivity extends AppCompatActivity {
                     Toast.makeText(LogInServerActivity.this, "SOmething went wrong on the server...", Toast.LENGTH_LONG).show();
                     Toast.makeText(LogInServerActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
                     error.printStackTrace();
-                    MainActivityOld.server_error = true;
+                    MainActivity.server_error = true;
                     finish();
                 }
             }) {
@@ -169,7 +169,7 @@ public class LogInServerActivity extends AppCompatActivity {
             case "null": {
                 alertBuilder.setTitle("warning");
                 alertBuilder.setMessage("You must fill the fields");
-                MainActivityOld.logging = false;
+                MainActivity.logging = false;
                 alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -182,7 +182,7 @@ public class LogInServerActivity extends AppCompatActivity {
             case "login_failed": {
                 alertBuilder.setTitle("warning");
                 alertBuilder.setMessage(staticMessage);
-                MainActivityOld.logging = false;
+                MainActivity.logging = false;
                 alertBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -208,7 +208,7 @@ public class LogInServerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(LogInServerActivity.this, MainActivityOld.class));
+        startActivity(new Intent(LogInServerActivity.this, MainActivity.class));
         finish();
     }
 }

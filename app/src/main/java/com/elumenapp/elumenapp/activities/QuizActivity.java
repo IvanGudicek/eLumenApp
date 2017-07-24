@@ -410,7 +410,7 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 BigDecimal score = PersonActivity.getGlobalStaticPerson().getTotalScore();
                 PersonActivity.getGlobalStaticPerson().setTotalScore(score.add(totalScore));
-                startActivity(new Intent(QuizActivity.this, MainActivityOld.class));
+                startActivity(new Intent(QuizActivity.this, MainActivity.class));
                 finish();
             }
         }).setNegativeButton("Nooo bro ;)", new DialogInterface.OnClickListener() {
@@ -476,7 +476,7 @@ public class QuizActivity extends AppCompatActivity {
                 BigDecimal score = PersonActivity.getGlobalStaticPerson().getTotalScore();
                 PersonActivity.getGlobalStaticPerson().setTotalScore(score.add(totalScore));
                 updateScoreToPersonDatabase();
-                startActivity(new Intent(QuizActivity.this, MainActivityOld.class));
+                startActivity(new Intent(QuizActivity.this, MainActivity.class));
                 finish();
             }
         }).setNeutralButton("cancel", new DialogInterface.OnClickListener() {

@@ -125,7 +125,7 @@ public class RegisterServerActivity extends AppCompatActivity {
 
 
     public void registerButtonListener(View view) {
-        MainActivityOld.getConnectionInfo(RegisterServerActivity.this);
+        MainActivity.getConnectionInfo(RegisterServerActivity.this);
         alertBuilder = new AlertDialog.Builder(this);
         name = editName.getText().toString();
         lastname = editLastname.getText().toString();
@@ -142,7 +142,7 @@ public class RegisterServerActivity extends AppCompatActivity {
         byte[] image = stream.toByteArray();
         image_string = Base64.encodeToString(image, 0);
 
-        if (!MainActivityOld.connecting) {
+        if (!MainActivity.connecting) {
             Toast.makeText(this, "No internet connection!!!", Toast.LENGTH_LONG).show();
         } else {
             if (name.equals("") || name.equals("") || username.equals("") || lastname.equals("") || email.equals("") || password.equals("") || check_password.equals("")) {
@@ -175,7 +175,7 @@ public class RegisterServerActivity extends AppCompatActivity {
                         Toast.makeText(RegisterServerActivity.this, "SOmething went wrong on the server...", Toast.LENGTH_LONG).show();
                         Toast.makeText(RegisterServerActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
                         error.printStackTrace();
-                        MainActivityOld.server_error = true;
+                        MainActivity.server_error = true;
                         finish();
                     }
                 }) {

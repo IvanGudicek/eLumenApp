@@ -32,7 +32,7 @@ public class StartQuizActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(StartQuizActivity.this, MainActivityOld.class));
+        startActivity(new Intent(StartQuizActivity.this, MainActivity.class));
         finish();
     }
 

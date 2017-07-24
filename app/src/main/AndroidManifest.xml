@@ -25,7 +25,7 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".activities.MainActivityOld"
+            android:name=".activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
@@ -34,11 +34,11 @@
         <activity
             android:name=".activities.StartQuizActivity"
             android:label="StartQuizActivity"
-            android:parentActivityName=".activities.MainActivityOld"
+            android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivityOld" />
+                android:value=".activities.MainActivity" />
         </activity>
         <activity
             android:name=".activities.SettingsActivity"
@@ -67,8 +67,6 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".activities.LogInActivity">
-        </activity>
-        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
