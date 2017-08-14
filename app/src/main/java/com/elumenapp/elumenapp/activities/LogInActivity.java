@@ -98,9 +98,11 @@ public class LogInActivity extends AppCompatActivity {
     private void nextActivity(Profile profile){
         if(profile != null){
             Intent main = new Intent(LogInActivity.this, MainActivity.class);
-            main.putExtra("name", profile.getFirstName());
-            main.putExtra("surname", profile.getLastName());
+            main.putExtra("firstName", profile.getFirstName());
+            main.putExtra("fullName", profile.getName());
+            main.putExtra("lastName", profile.getLastName());
             main.putExtra("imageUrl", profile.getProfilePictureUri(200,200).toString());
+            main.putExtra("facebookId", profile.getId());
             startActivity(main);
             finish();
         }

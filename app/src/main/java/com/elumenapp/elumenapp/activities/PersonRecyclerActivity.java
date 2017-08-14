@@ -30,10 +30,10 @@ public class PersonRecyclerActivity extends AppCompatActivity {
 
         name = (TextView) findViewById(R.id.personName);
         username = (TextView) findViewById(R.id.personUsername);
-        email = (TextView) findViewById(R.id.personEmail);
+     //   email = (TextView) findViewById(R.id.personEmail);
         name.setText("name: " + currentRecyclerPerson.getName() + ", last name: " + currentRecyclerPerson.getLastname());
-        username.setText(RecyclerActivity.getCurrentPerson().getUsername());
-        email.setText(RecyclerActivity.getCurrentPerson().getEmail());
+     //   username.setText(RecyclerActivity.getCurrentPerson().getUsername());
+     //   email.setText(RecyclerActivity.getCurrentPerson().getEmail());
         imageOfPerson = (ImageView) findViewById(R.id.imageViewPerson);
         imageOfPerson.setImageDrawable(currentRecyclerPerson.getDrawable());
     }

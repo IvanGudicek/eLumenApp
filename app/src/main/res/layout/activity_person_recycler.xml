@@ -10,30 +10,10 @@
     tools:context="com.elumenapp.elumenapp.activities.PersonActivity">
 
     <TextView
-        android:id="@+id/personUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:text="pserson username"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/personEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/personUsername"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
         android:id="@+id/personName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/personEmail"
-        android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
@@ -43,16 +23,12 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
-
-
-
     <RatingBar
         android:id="@+id/personRatingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/personEmail" />
-
+        android:layout_toEndOf="@+id/personName" />
 
 
 </RelativeLayout>

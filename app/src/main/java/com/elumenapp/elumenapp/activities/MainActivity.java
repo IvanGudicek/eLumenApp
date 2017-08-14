@@ -1,17 +1,8 @@
 package com.elumenapp.elumenapp.activities;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,7 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,13 +21,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.elumenapp.elumenapp.R;
 import com.elumenapp.elumenapp.data.MySingleton;
-import com.elumenapp.elumenapp.models.Person;
+import com.elumenapp.elumenapp.models.User;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
@@ -47,7 +39,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -59,19 +50,18 @@ public class MainActivity extends AppCompatActivity
 
     private View globalView;
     private CallbackManager callbackManager = null;
-    public static boolean logging = false, logouting = false;
-    public static boolean connecting = false;
-    private static final String persons_url = "http://ivangudicek.comli.com/persons.php";
-    public static boolean server_error = false, sharedPreferences = false;
-    private static List<Person> listOfPersons = new ArrayList<>();
+    private static List<User> listOfUsers = new ArrayList<>();
+
+    private User user = new User();
+    private String facebookid, facebookImagePath;
 
 
-    public static List<Person> getListOfPersons() {
-        return listOfPersons;
+    public static List<User> getListOfUsers() {
+        return listOfUsers;
     }
 
-    public static void setListOfPersons(List<Person> listOfPersons) {
-        MainActivity.listOfPersons = listOfPersons;
+    public static void setListOfUsers(List<User> listOfUsers) {
+        MainActivity.listOfUsers = listOfUsers;
     }
 
     @Override
@@ -84,110 +74,100 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public void run() {
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, persons_url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    server_error = false;
-                    JSONArray jsonArray;
-                    listOfPersons = new ArrayList<>();
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        jsonArray = jsonObject.getJSONArray("persons");
-                        int count = 0;
-                        while (count < jsonArray.length()) {
-                            JSONObject object = jsonArray.getJSONObject(count++);
-                            String string = object.getString("image");
-                            byte[] decodedString = Base64.decode(string, Base64.DEFAULT);
-                            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                            Drawable drawable = new BitmapDrawable(getResources(), decodedByte);
-                            listOfPersons.add(new Person(object.getString("username"), drawable, new BigDecimal(object.getDouble("total_score")), object.getString("password"),
-                                    object.getString("description"), object.getString("name"), object.getString("lastname"),
-                                    object.getString("email")));
-                            MainActivity.server_error = false;
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        MainActivity.server_error = true;
-                    } catch (NullPointerException e) {
-                        e.printStackTrace();
-                        MainActivity.server_error = true;
-                    }
-                }
 
-            }, new Response.ErrorListener() {
+            JsonArrayRequest userJsonRequest = new JsonArrayRequest("http://192.168.56.1:8080/user/list",
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            if (response.length() > 0) {
+                                for (int i = 0; i < response.length(); i++) {
+                                    try {
+                                        JSONObject object = response.getJSONObject(i);
+                                        listOfUsers.add(new User(object.getInt("id"), object.getString("facebookId"), object.getString("firstName")
+                                                , object.getString("lastName"), object.getString("fullName")));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            for (User user : listOfUsers) {
+                                System.out.println(user.toString());
+                            }
+                        }
+                    }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    server_error = true;
                     error.printStackTrace();
                 }
             });
-            MySingleton.getInstance(MainActivity.this).addToRequestQueue(stringRequest);
+            MySingleton.getInstance(MainActivity.this).addToRequestQueue(userJsonRequest);
         }
     }
 
+    private String jsonResponse = null;
 
-    public void setSharedPreferences() {
-        SharedPreferences sp = getSharedPreferences("shared", MODE_PRIVATE);
-        byte[] decodedString = Base64.decode(sp.getString("image", ""), Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-        Drawable drawable = new BitmapDrawable(getResources(), decodedByte);
-        sharedPreferences = !sp.getString("username", "").equals("");
-        if (sharedPreferences) {
-            PersonActivity.setGlobalStaticPerson(sp.getString("username", ""), drawable, new BigDecimal(sp.getFloat("total_score", 0)), sp.getString("password", ""), sp.getString("description", ""), sp.getString("name", ""), sp.getString("lastname", ""), sp.getString("email", ""));
+    private void updateFacebookUserToDatabase(User facebookUser) {
+        JSONObject jsonBody = null;
+
+        try {
+            jsonBody = new JSONObject();
+            jsonBody.put("facebookId", facebookUser.getFacebookId());
+            jsonBody.put("firstName", facebookUser.getFirstName());
+            jsonBody.put("lastName", facebookUser.getLastName());
+            jsonBody.put("fullName", facebookUser.getFullName());
+            jsonResponse = jsonBody.toString();
+
+            StringRequest stringRequest = new StringRequest(Request.Method.PUT,
+                    "http://192.168.56.1:8080/user/login", new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            }) {
+                @Override
+                public String getBodyContentType() {
+                    return String.format("application/json; charset=utf-8");
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return jsonResponse == null ? null : jsonResponse.getBytes("utf-8");
+                    } catch (Exception error) {
+                        error.printStackTrace();
+                        return null;
+                    }
+                }
+            };
+            MySingleton.getInstance(this).addToRequestQueue(stringRequest);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
-
-    public void cleanSharedPreferences() {
-        sharedPreferences = false;
-        SharedPreferences sharedPreferences = getSharedPreferences("shared", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("name", "");
-        editor.putString("username", "");
-        editor.putString("password", "");
-        editor.putString("lastname", "");
-        editor.putString("email", "");
-        editor.putString("description", "");
-        editor.putFloat("total_score", 0);
-        editor.putString("image", "");
-        editor.commit();
-        PersonActivity.setGlobalStaticPerson(null, null, null, null, null, null, null, null);
-    }
-
-
-    public static void getConnectionInfo(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        MainActivity.connecting = !(networkInfo == null || !networkInfo.isConnected());
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle inBundle = getIntent().getExtras();
-        String name = inBundle.get("name").toString();
-        String surname = inBundle.get("surname").toString();
+        String name = inBundle.getString("firstName");
+        String surname = inBundle.getString("lastName");
+        String id = inBundle.getString("facebookId");
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
 
+        user = new User(id, name, surname, inBundle.getString("fullName"));
+        updateFacebookUserToDatabase(user);
 
-        //  super.onCreate(savedInstanceState);
         ExecutorService executorService = Executors.newFixedThreadPool(1);
         ThreadServerPerson threadServerPerson = new ThreadServerPerson();
         executorService.execute(threadServerPerson);
         executorService.shutdown();
 
-        //   FacebookSdk.sdkInitialize(getApplicationContext());
-        // AppEventsLogger.activateApp(this);
-
-
-        getConnectionInfo(MainActivity.this);
-        setSharedPreferences();
-        if (connecting && !server_error && (logging || sharedPreferences && !logouting)) {
-            setContentView(R.layout.activity_main_login);
-        } else {
-            setContentView(R.layout.activity_main_logout);
-        }
-        //getResponseFromPersons();
+        setContentView(R.layout.activity_main);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -204,30 +184,17 @@ public class MainActivity extends AppCompatActivity
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         if (drawer != null) {
             drawer.setDrawerListener(toggle);
         }
         toggle.syncState();
 
-
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.contentMainRelativeLayout);
         View childRelativeLayout, childLinearLayout;
-        if (connecting && !server_error && (logging || sharedPreferences && !logouting)) {
-            childRelativeLayout = inflater.inflate(R.layout.content_main_login, (ViewGroup) findViewById(R.id.contentLoginRelativeLayout));
-            childLinearLayout = inflater.inflate(R.layout.nav_login, (ViewGroup) findViewById(R.id.navLoginLinearLayout));
-        } else {
-            childLinearLayout = inflater.inflate(R.layout.nav_logout, (ViewGroup) findViewById(R.id.navLogoutLinearLayout));
-            childRelativeLayout = inflater.inflate(R.layout.content_main_logout, (ViewGroup) findViewById(R.id.contentLogoutRelativeLayout));
+        childRelativeLayout = inflater.inflate(R.layout.content_main, (ViewGroup) findViewById(R.id.contentMainRelativeLayout));
+        childLinearLayout = inflater.inflate(R.layout.nav, (ViewGroup) findViewById(R.id.left_sidebar_nav));
 
-        }
-        if (relativeLayout != null) {
-            relativeLayout.removeAllViews();
-        }
-        if (relativeLayout != null) {
-            relativeLayout.addView(childRelativeLayout);
-        }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
@@ -241,66 +208,45 @@ public class MainActivity extends AppCompatActivity
         TextView personFullName = (TextView) findViewById(R.id.personFullName);
         TextView personUsername = (TextView) findViewById(R.id.personUsername);
         ImageView personImageView = (ImageView) findViewById(R.id.personImageView);
-        if (connecting && !server_error && (logging || sharedPreferences && !logouting)) {
-            personFullName.setText(PersonActivity.getGlobalStaticPerson().getName() + " " + PersonActivity.getGlobalStaticPerson().getLastname());
+        personFullName.setText(name + " " + surname);
+        personUsername.setText(id);
+        System.out.println("////////////////////////////////////////////////////////////////////////////////////" +
+                "////////////////////////////////////////////////////////////////////////////////////////////////////////////////" +
+                "////////////////////////////////////////////////////////////////////////////////////////////////////////////////" +
+                "////////////////////////////////////////////////////////////////////////////////////" +
+                "////////////////////////////////////////////////////////////////////////////////////");
+        System.out.println(id);
 
-            personUsername.setText(PersonActivity.getGlobalStaticPerson().getUsername());
-
-            personImageView.setImageDrawable(PersonActivity.getGlobalStaticPerson().getDrawable());
-
-        } else {
-        //    personFullName.setText("Unknown user!!");
-
-         //   personUsername.setText("Please logIn :)");
-
-          //  personImageView.setImageResource(R.drawable.com_facebook_profile_picture_blank_square);
-
-        }
-
-        TextView nameView = (TextView) findViewById(R.id.nameAndSurname);
-        nameView.setText("" + name + " " + surname);
-  //      ImageView profile_pic = (ImageView) nameView.findViewById(R.id.personImageView);
-    //    profile_pic.setImageURI((Uri) inBundle.get("imageUrl"));
-
+        System.out.println("////////////////////////////////////////////////////////////////////////////////////" +
+                "////////////////////////////////////////////////////////////////////////////////////////////////////////////////" +
+                "////////////////////////////////////////////////////////////////////////////////////////////////////////////////" +
+                "////////////////////////////////////////////////////////////////////////////////////" +
+                "////////////////////////////////////////////////////////////////////////////////////");
+//        personImageView.setImageDrawable(PersonActivity.getGlobalStaticPerson().getDrawable());
+        String imgUrl = "https://graph.facebook.com/" + inBundle.getString("facebookId") + "/picture?type=large";
         Picasso.with(this)
-                .load(inBundle.get("imageUrl").toString())
+                .load(imgUrl)
                 .into(personImageView);
 
     }
 
-
     public void startQuizButtonListener(View view) {
-        if (connecting && !server_error && (logging || sharedPreferences && !logouting)) {
-            startActivity(new Intent(MainActivity.this, StartQuizActivity.class));
-            finish();
-        } else {
-            Toast.makeText(MainActivity.this, "You are not log in!!!", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    public void profileButtonListener(View view) {
-        startActivity(new Intent(MainActivity.this, PersonActivity.class));
-    }
-
-    public void signUpButtonListener(View view) {
-        startActivity(new Intent(MainActivity.this, LogInServerActivity.class));
+        startActivity(new Intent(MainActivity.this, StartQuizActivity.class));
         finish();
     }
 
+    public void profileButtonListener(View view) {
+        Intent profileIntent = new Intent(MainActivity.this, PersonActivity.class);
+        profileIntent.putExtra("fullName", user.getFullName());
+        profileIntent.putExtra("facebookId", user.getFacebookId());
+        profileIntent.putExtra("firstName", user.getFirstName());
+        profileIntent.putExtra("lastName", user.getLastName());
+        startActivity(profileIntent);
+    }
+
+
     public void listOfPersonsButtonListener(View view) {
-        getConnectionInfo(MainActivity.this);
-        if (server_error) {
-            Toast.makeText(MainActivity.this, "Something went wrong on the server...", Toast.LENGTH_LONG).show();
-            Toast.makeText(MainActivity.this, "through few seconds will be enabled question for all users :)", Toast.LENGTH_LONG).show();
-        } else {
-            if (connecting) {
-                startActivity(new Intent(MainActivity.this, RecyclerActivity.class));
-            } else {
-                Toast.makeText(this, "No internet connection!!!", Toast.LENGTH_LONG).show();
-            }
-        }
-
-
+        startActivity(new Intent(MainActivity.this, RecyclerActivity.class));
     }
 
     public void settingsButtonListener(View view) {
@@ -357,11 +303,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        if (connecting && !server_error && (logging || sharedPreferences && !logouting)) {
-            getMenuInflater().inflate(R.menu.menu_logout, menu);
-        } else {
-            getMenuInflater().inflate(R.menu.menu_login, menu);
-        }
+        getMenuInflater().inflate(R.menu.menu_logout, menu);
+
         return true;
     }
 
@@ -386,8 +329,6 @@ public class MainActivity extends AppCompatActivity
                 finish();
                 break;
             case R.id.action_logout:
-                logging = false;
-                logouting = true;
                 finish();
                 startActivity(getIntent());
                 break;
@@ -407,13 +348,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_about:
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
-            case R.id.nav_login:
-                startActivity(new Intent(MainActivity.this, LogInServerActivity.class));
-                finish();
-                break;
             case R.id.nav_logout:
-                logging = false;
-                logouting = true;
                 finish();
                 startActivity(getIntent());
                 break;

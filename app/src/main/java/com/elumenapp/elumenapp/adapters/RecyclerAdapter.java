@@ -1,5 +1,7 @@
 package com.elumenapp.elumenapp.adapters;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,26 +11,35 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.elumenapp.elumenapp.R;
+import com.elumenapp.elumenapp.activities.MainActivity;
+import com.elumenapp.elumenapp.activities.PersonRecyclerActivity;
 import com.elumenapp.elumenapp.models.Person;
+import com.elumenapp.elumenapp.models.User;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.util.List;
 
 /**
  * Created by IvanGudiček on 7/29/2016.
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
-    private List<Person> dataList;
+    private List<User> dataList;
 
 
-    public List<Person> getDataList() {
+    public List<User> getDataList() {
         return dataList;
     }
 
-    public void setDataList(List<Person> dataList) {
+    public void setDataList(List<User> dataList) {
         this.dataList = dataList;
     }
 
-    public RecyclerAdapter(List<Person> dataList) {
+    public RecyclerAdapter(List<User> dataList) {
         this.dataList = dataList;
     }
 
@@ -46,10 +57,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
-        Person person = dataList.get(position);
-        holder.username.setText(person.getName());
-        holder.imageView.setImageDrawable(person.getDrawable());
-        holder.ratingBar.setRating(person.getTotalScore().floatValue());
+        User user = dataList.get(position);
+        holder.username.setText(user.getFullName());
+        String imgUrl = "https://graph.facebook.com/" + user.getFacebookId() + "/picture?type=large";
+        Picasso.with(holder.imageView.getContext())
+                .load(imgUrl)
+                .into(holder.imageView);
     }
 
     @Override

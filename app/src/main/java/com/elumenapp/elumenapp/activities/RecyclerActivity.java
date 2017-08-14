@@ -1,6 +1,8 @@
 package com.elumenapp.elumenapp.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +14,13 @@ import com.elumenapp.elumenapp.RecyclerItemClickListener;
 import com.elumenapp.elumenapp.R;
 import com.elumenapp.elumenapp.adapters.RecyclerAdapter;
 import com.elumenapp.elumenapp.models.Person;
+import com.elumenapp.elumenapp.models.User;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,16 +29,8 @@ public class RecyclerActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private LinearLayoutManager linearLayoutManager;
-    private static Person currentPerson = new Person(null, null, null, null, null, null, null, null);
-    List<Person> listOfPersons = new ArrayList<>();
+    List<User> listOfUsers = new ArrayList<>();
 
-    public static Person getCurrentPerson() {
-        return currentPerson;
-    }
-
-    public static void setCurrentPerson(Person person) {
-        currentPerson.setCurrentPerson(person);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +39,10 @@ public class RecyclerActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
 
-        listOfPersons.addAll(MainActivity.getListOfPersons());
+        listOfUsers.addAll(MainActivity.getListOfUsers());
 
 
-        adapter = new RecyclerAdapter(listOfPersons);
+        adapter = new RecyclerAdapter(listOfUsers);
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -50,22 +50,18 @@ public class RecyclerActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                PersonRecyclerActivity.setCurrentRecyclerPerson(listOfPersons.get(position));
-                if (PersonActivity.getGlobalStaticPerson().getUsername().equals(PersonRecyclerActivity.getCurrentRecyclerPerson().getUsername())) {
-                    startActivity(new Intent(RecyclerActivity.this, PersonActivity.class));
-                    finish();
-                } else {
-                    startActivity(new Intent(RecyclerActivity.this, PersonRecyclerActivity.class));
-                }
+             //   PersonRecyclerActivity.setCurrentRecyclerPerson(listOfUsers.get(position));
+                startActivity(new Intent(RecyclerActivity.this, PersonRecyclerActivity.class));
             }
 
             @Override
             public void onLongItemClick(View view, int position) {
-                String umetni = listOfPersons.get(position).getName() + ", " + listOfPersons.get(position).getLastname();
+                String umetni = listOfUsers.get(position).getFullName();
                 Toast.makeText(RecyclerActivity.this, umetni, Toast.LENGTH_LONG).show();
             }
         }));
-
     }
+
+
 
 }

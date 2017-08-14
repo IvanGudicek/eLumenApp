@@ -353,9 +353,7 @@ public class QuizActivity extends AppCompatActivity {
                     score = score.subtract(up.divide(down));
                 }
                 positiveScore = false;
-
             }
-
         }
         totalScore.setScale(3);
         totalScore = totalScore.add(score);
@@ -446,9 +444,9 @@ public class QuizActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 //Adding parameters
-                params.put("username", RecyclerActivity.getCurrentPerson().getUsername());
-                params.put("password", RecyclerActivity.getCurrentPerson().getPassword());
-                params.put("score", RecyclerActivity.getCurrentPerson().getTotalScore().toString());
+              //  params.put("username", RecyclerActivity.getCurrentPerson().getUsername());
+              //  params.put("password", RecyclerActivity.getCurrentPerson().getPassword());
+              //  params.put("score", RecyclerActivity.getCurrentPerson().getTotalScore().toString());
                 return params;
             }
         };
@@ -636,6 +634,4 @@ public class QuizActivity extends AppCompatActivity {
 
         }
     }
-
-
 }
