@@ -1,7 +1,5 @@
 package com.elumenapp.elumenapp.adapters;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +9,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.elumenapp.elumenapp.R;
-import com.elumenapp.elumenapp.activities.MainActivity;
-import com.elumenapp.elumenapp.activities.PersonRecyclerActivity;
-import com.elumenapp.elumenapp.models.Person;
 import com.elumenapp.elumenapp.models.User;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.util.List;
 
 /**

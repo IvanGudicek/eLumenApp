@@ -6,9 +6,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.elumenapp.elumenapp.R;
-import com.elumenapp.elumenapp.models.Person;
 
-public class PersonRecyclerActivity extends AppCompatActivity {
+public class UserRecyclerActivity extends AppCompatActivity {
 
     private TextView name, username, email;
     private ImageView imageOfPerson;

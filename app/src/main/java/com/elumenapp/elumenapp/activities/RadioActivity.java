@@ -1,4 +1,4 @@
-package com.elumenapp.elumenapp.models;
+package com.elumenapp.elumenapp.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,11 +6,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.elumenapp.elumenapp.R;
+import com.elumenapp.elumenapp.models.Answer;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Radio extends AppCompatActivity {
+public class RadioActivity extends AppCompatActivity {
 
     private RadioGroup radioGroup;
     private RadioButton button1, button2, button3, button4;
@@ -19,10 +20,10 @@ public class Radio extends AppCompatActivity {
 
     public void setEntiretyList(List<Answer> list){
         entiretyList.addAll(list);
-        button1.setText(entiretyList.get(0).getTextOfAnswer());
-        button2.setText(entiretyList.get(1).getTextOfAnswer());
-        button3.setText(entiretyList.get(2).getTextOfAnswer());
-        button4.setText(entiretyList.get(3).getTextOfAnswer());
+        button1.setText(entiretyList.get(0).getText());
+        button2.setText(entiretyList.get(1).getText());
+        button3.setText(entiretyList.get(2).getText());
+        button4.setText(entiretyList.get(3).getText());
     }
 
     @Override

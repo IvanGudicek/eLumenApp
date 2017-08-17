@@ -26,6 +26,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.elumenapp.elumenapp.R;
 import com.elumenapp.elumenapp.data.MySingleton;
@@ -41,8 +42,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -52,8 +51,7 @@ public class MainActivity extends AppCompatActivity
     private CallbackManager callbackManager = null;
     private static List<User> listOfUsers = new ArrayList<>();
 
-    private User user = new User();
-    private String facebookid, facebookImagePath;
+    public static final String SERVER_CONNECTION_URL = "http://192.168.56.1:8080";
 
 
     public static List<User> getListOfUsers() {
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void run() {
 
-            JsonArrayRequest userJsonRequest = new JsonArrayRequest("http://192.168.56.1:8080/user/list",
+            JsonArrayRequest userJsonRequest = new JsonArrayRequest(SERVER_CONNECTION_URL + "/user/list",
                     new Response.Listener<JSONArray>() {
                         @Override
                         public void onResponse(JSONArray response) {
@@ -90,9 +88,6 @@ public class MainActivity extends AppCompatActivity
                                     }
                                 }
                             }
-                            for (User user : listOfUsers) {
-                                System.out.println(user.toString());
-                            }
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -105,12 +100,19 @@ public class MainActivity extends AppCompatActivity
     }
 
     private String jsonResponse = null;
+    private static User user = new User();
+
+    public static User getUser() {
+        return user;
+    }
+
+    public static void setUser(User tmpUser) {
+        user = tmpUser;
+    }
 
     private void updateFacebookUserToDatabase(User facebookUser) {
-        JSONObject jsonBody = null;
-
         try {
-            jsonBody = new JSONObject();
+            JSONObject jsonBody = new JSONObject();
             jsonBody.put("facebookId", facebookUser.getFacebookId());
             jsonBody.put("firstName", facebookUser.getFirstName());
             jsonBody.put("lastName", facebookUser.getLastName());
@@ -118,7 +120,7 @@ public class MainActivity extends AppCompatActivity
             jsonResponse = jsonBody.toString();
 
             StringRequest stringRequest = new StringRequest(Request.Method.PUT,
-                    "http://192.168.56.1:8080/user/login", new Response.Listener<String>() {
+                    SERVER_CONNECTION_URL + "/user/login", new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
 
@@ -127,6 +129,7 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     error.printStackTrace();
+                    Toast.makeText(MainActivity.this, "Korisnik nije uspješno spremljen u bazu!! Ponovno pokrenite server te probajte ponovno!", Toast.LENGTH_LONG).show();
                 }
             }) {
                 @Override
@@ -150,6 +153,27 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void getUserFromDatabase(String facebookId) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(SERVER_CONNECTION_URL + "/user/get/facebook/" + facebookId,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            user = new User(response.getInt("id"), response.getString("facebookId"), response.getString("firstName"), response.getString("lastName"), response.getString("fullName"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(MainActivity.this, "Pokrenite server te probajte ponovo!", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonObjectRequest);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle inBundle = getIntent().getExtras();
@@ -159,13 +183,13 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
 
-        user = new User(id, name, surname, inBundle.getString("fullName"));
-        updateFacebookUserToDatabase(user);
+        updateFacebookUserToDatabase(new User(id, name, surname, inBundle.getString("fullName")));
+        getUserFromDatabase(id);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(1);
-        ThreadServerPerson threadServerPerson = new ThreadServerPerson();
-        executorService.execute(threadServerPerson);
-        executorService.shutdown();
+//        ExecutorService executorService = Executors.newFixedThreadPool(1);
+//        ThreadServerPerson threadServerPerson = new ThreadServerPerson();
+//        executorService.execute(threadServerPerson);
+//        executorService.shutdown();
 
         setContentView(R.layout.activity_main);
 
@@ -210,43 +234,50 @@ public class MainActivity extends AppCompatActivity
         ImageView personImageView = (ImageView) findViewById(R.id.personImageView);
         personFullName.setText(name + " " + surname);
         personUsername.setText(id);
-        System.out.println("////////////////////////////////////////////////////////////////////////////////////" +
-                "////////////////////////////////////////////////////////////////////////////////////////////////////////////////" +
-                "////////////////////////////////////////////////////////////////////////////////////////////////////////////////" +
-                "////////////////////////////////////////////////////////////////////////////////////" +
-                "////////////////////////////////////////////////////////////////////////////////////");
-        System.out.println(id);
-
-        System.out.println("////////////////////////////////////////////////////////////////////////////////////" +
-                "////////////////////////////////////////////////////////////////////////////////////////////////////////////////" +
-                "////////////////////////////////////////////////////////////////////////////////////////////////////////////////" +
-                "////////////////////////////////////////////////////////////////////////////////////" +
-                "////////////////////////////////////////////////////////////////////////////////////");
-//        personImageView.setImageDrawable(PersonActivity.getGlobalStaticPerson().getDrawable());
         String imgUrl = "https://graph.facebook.com/" + inBundle.getString("facebookId") + "/picture?type=large";
         Picasso.with(this)
                 .load(imgUrl)
                 .into(personImageView);
-
     }
 
     public void startQuizButtonListener(View view) {
         startActivity(new Intent(MainActivity.this, StartQuizActivity.class));
-        finish();
     }
 
     public void profileButtonListener(View view) {
-        Intent profileIntent = new Intent(MainActivity.this, PersonActivity.class);
+        Intent profileIntent = new Intent(MainActivity.this, UserActivity.class);
         profileIntent.putExtra("fullName", user.getFullName());
         profileIntent.putExtra("facebookId", user.getFacebookId());
-        profileIntent.putExtra("firstName", user.getFirstName());
-        profileIntent.putExtra("lastName", user.getLastName());
         startActivity(profileIntent);
     }
 
 
     public void listOfPersonsButtonListener(View view) {
-        startActivity(new Intent(MainActivity.this, RecyclerActivity.class));
+        JsonArrayRequest userJsonRequest = new JsonArrayRequest(SERVER_CONNECTION_URL + "/user/list",
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        if (response.length() > 0) {
+                            for (int i = 0; i < response.length(); i++) {
+                                try {
+                                    JSONObject object = response.getJSONObject(i);
+                                    listOfUsers.add(new User(object.getInt("id"), object.getString("facebookId"), object.getString("firstName")
+                                            , object.getString("lastName"), object.getString("fullName")));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        startActivity(new Intent(MainActivity.this, RecyclerActivity.class));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(MainActivity.this, "Dohvat liste korisnika nije uspio, pokrenite server te probajte ponovno!", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(userJsonRequest);
     }
 
     public void settingsButtonListener(View view) {
@@ -303,7 +334,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_logout, menu);
+        getMenuInflater().inflate(R.menu.menu_login, menu);
 
         return true;
     }
@@ -353,7 +384,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(getIntent());
                 break;
             case R.id.nav_profile:
-                startActivity(new Intent(MainActivity.this, PersonActivity.class));
+                startActivity(new Intent(MainActivity.this, UserActivity.class));
                 break;
             case R.id.nav_tools:
                 startActivity(new Intent(MainActivity.this, Settings_Activity.class));

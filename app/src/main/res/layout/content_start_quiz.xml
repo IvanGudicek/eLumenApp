@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="First edition of this app have only one subject for only one course!"
-        android:id="@+id/textView5"
+        android:id="@+id/textEdition"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -25,20 +25,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="and this is ..."
-        android:id="@+id/textView6"
-        android:layout_below="@+id/textView5"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="43dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="for the future, I'll put the list to select subject and college"
-        android:id="@+id/textView7"
-        android:layout_marginTop="47dp"
-        android:layout_below="@+id/textView6"
+        android:text="Odaberi predmet"
+        android:id="@+id/textSubject"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/textEdition"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -49,6 +39,14 @@
         android:onClick="startQuizActivityButtonListener"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="118dp" />
+        android:layout_marginBottom="166dp" />
+
+    <RadioGroup
+        android:id="@+id/subjectRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/textSubject" />
 
 </RelativeLayout>
