@@ -10,8 +10,8 @@ android {
 
     defaultConfig {
         applicationId "com.elumenapp.elumenapp"
-        minSdkVersion 17
-        targetSdkVersion 21
+        minSdkVersion 25
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         jackOptions {
@@ -26,7 +26,7 @@ android {
     }
     compileOptions {
         sourceCompatibility 1.8
-        targetCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility 1.8
     }
 }
 

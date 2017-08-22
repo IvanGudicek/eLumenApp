@@ -50,12 +50,11 @@
             android:label="Quiz_Activity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.UserActivity" />
-        <activity android:name=".activities.RecyclerActivity">
+        <activity android:name=".activities.UserListActivity">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".activities.UserRecyclerActivity" />
         <!--
              ATTENTION: This was auto-generated to add Google Play services to your project for
              App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.

@@ -15,6 +15,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ratingBar"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
+        android:isIndicator="true"
         android:layout_below="@+id/mediumText"
         android:layout_alignParentStart="true" />
 </RelativeLayout>

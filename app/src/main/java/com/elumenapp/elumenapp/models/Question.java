@@ -1,7 +1,6 @@
 package com.elumenapp.elumenapp.models;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
@@ -32,26 +31,6 @@ public class Question {
 
     public Question copyQuestion(Question question) {
         return new Question(question.getId(), question.getText(), question.getExplanation(), question.getSubject(), question.getAnswerList());
-    }
-
-    public List<Answer> getCorrectAnswers(List<Answer> answers) {
-        List<Answer> correctAnswers = new ArrayList<>();
-        for (Answer answer : answers) {
-            if (answer.isCorrect()) {
-                correctAnswers.add(answer);
-            }
-        }
-        return correctAnswers;
-    }
-
-    public List<Answer> getInCorrectAnswers(List<Answer> answers) {
-        List<Answer> inCorrectAnswers = new ArrayList<>();
-        for (Answer answer : answers) {
-            if (!answer.isCorrect()) {
-                inCorrectAnswers.add(answer);
-            }
-        }
-        return inCorrectAnswers;
     }
 
     public int getId() {

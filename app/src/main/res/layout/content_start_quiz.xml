@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="First edition of this app have only one subject for only one course!"
+        android:text="Ovo je beta verija eLumen aplikacije!!"
         android:id="@+id/textEdition"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />

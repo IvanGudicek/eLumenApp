@@ -9,17 +9,27 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.elumenapp.elumenapp.R;
+import com.elumenapp.elumenapp.models.Score;
 import com.elumenapp.elumenapp.models.User;
 import com.squareup.picasso.Picasso;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
+import java.util.stream.Collectors;
 
-/**
- * Created by IvanGudiček on 7/29/2016.
- */
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserAdapter.RecyclerViewHolder> {
+
     private List<User> dataList;
+    private List<Score> scoreList;
 
+    public List<Score> getScoreList() {
+        return scoreList;
+    }
+
+    public void setScoreList(List<Score> scoreList) {
+        this.scoreList = scoreList;
+    }
 
     public List<User> getDataList() {
         return dataList;
@@ -29,14 +39,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
         this.dataList = dataList;
     }
 
-    public RecyclerAdapter(List<User> dataList) {
+    public UserAdapter(List<User> dataList, List<Score> scoreList) {
         this.dataList = dataList;
+        this.scoreList = scoreList;
     }
 
 
     @Override
-    public RecyclerAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item_layout, parent, false);
+    public UserAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_list_item, parent, false);
         return new RecyclerViewHolder(view);
     }
 
@@ -48,11 +59,23 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         User user = dataList.get(position);
+        BigDecimal totalScore = new BigDecimal(0);
+        totalScore.setScale(3, RoundingMode.HALF_UP);
         holder.username.setText(user.getFullName());
         String imgUrl = "https://graph.facebook.com/" + user.getFacebookId() + "/picture?type=large";
         Picasso.with(holder.imageView.getContext())
                 .load(imgUrl)
                 .into(holder.imageView);
+        List<Score> userScores = scoreList.stream().filter(score -> score.getUser().getId() == user.getId()).collect(Collectors.toList());
+        for (Score score : userScores) {
+            totalScore = totalScore.add(score.getScore().divide(new BigDecimal(score.getRoundNumber()), 3, RoundingMode.HALF_UP));
+        }
+        if (userScores.size() == 0) {
+            holder.userRating.setRating(Float.parseFloat(new BigDecimal(0).toString()));
+        } else {
+            holder.userRating.setRating(Float.parseFloat(totalScore.divide(new BigDecimal(userScores.size()), 3, RoundingMode.HALF_UP).toString()));
+        }
+
     }
 
     @Override
@@ -65,14 +88,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
         public ImageView imageView;
         public TextView username;
-        public RatingBar ratingBar;
+        public RatingBar userRating;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.itemImageView);
             username = (TextView) itemView.findViewById(R.id.itemUsername);
-            ratingBar = (RatingBar) itemView.findViewById(R.id.itemRatingBar);
-            ratingBar.setEnabled(false);
+            userRating = (RatingBar) itemView.findViewById(R.id.userRating);
+            // userRating.setStepSize((float) 0.001);
         }
     }
 }

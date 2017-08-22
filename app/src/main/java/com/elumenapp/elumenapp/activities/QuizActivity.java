@@ -37,6 +37,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QuizActivity extends AppCompatActivity {
 
@@ -138,7 +139,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void disableButtons() {
-        if (globalQuestion.getCorrectAnswers(globalQuestion.getAnswerList()).size() > 1) {
+        if (globalQuestion.getAnswerList().stream().filter(answer1 -> answer1.isCorrect()).count() > 1) {
             checkBox1.setEnabled(false);
             checkBox2.setEnabled(false);
             checkBox3.setEnabled(false);
@@ -153,7 +154,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void enabledButtons() {
-        if (globalQuestion.getCorrectAnswers(globalQuestion.getAnswerList()).size() > 1) {
+        if (globalQuestion.getAnswerList().stream().filter(answer1 -> answer1.isCorrect()).count() > 1) {
             checkBox1.setEnabled(true);
             checkBox2.setEnabled(true);
             checkBox3.setEnabled(true);
@@ -167,7 +168,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public void resetValuesOfAnswers() {
-        if (globalQuestion.getCorrectAnswers(globalQuestion.getAnswerList()).size() > 1) {
+        if (globalQuestion.getAnswerList().stream().filter(answer1 -> answer1.isCorrect()).count() > 1) {
             checkBox1.setChecked(false);
             checkBox2.setChecked(false);
             checkBox3.setChecked(false);
@@ -197,7 +198,7 @@ public class QuizActivity extends AppCompatActivity {
             globalQuestion = globalQuestion.copyQuestion(questions.get(number));
             explanationString = globalQuestion.getExplanation();
             questionText.setText(globalQuestion.getText());
-            if (globalQuestion.getCorrectAnswers(globalQuestion.getAnswerList()).size() > 1) {
+            if (globalQuestion.getAnswerList().stream().filter(answer1 -> answer1.isCorrect()).count() > 1) {
                 changeLayout(false);
             } else {
                 changeLayout(true);
@@ -217,7 +218,7 @@ public class QuizActivity extends AppCompatActivity {
 
     public boolean checkStrings(String string) {
         boolean bool = false;
-        for (Answer answer : globalQuestion.getCorrectAnswers(globalQuestion.getAnswerList())) {
+        for (Answer answer : globalQuestion.getAnswerList().stream().filter(answer1 -> answer1.isCorrect()).collect(Collectors.toList())) {
             if (answer.getText().equals(string)) {
                 bool = true;
                 break;
@@ -228,7 +229,7 @@ public class QuizActivity extends AppCompatActivity {
 
 
     public void changeLayoutOfAnswer() {
-        if (globalQuestion.getCorrectAnswers(globalQuestion.getAnswerList()).size() > 1) {
+        if (globalQuestion.getAnswerList().stream().filter(answer1 -> answer1.isCorrect()).count() > 1) {
             for (CheckBox checkBox : listOfCheckBoxes) {
                 if (checkStrings(checkBox.getText().toString())) {
                     checkBox.setBackgroundColor(getResources().getColor(R.color.correctColor));
@@ -260,7 +261,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     public String getInformationOfAnswer() {
-        int numberOfCorrectAnswers = globalQuestion.getCorrectAnswers(globalQuestion.getAnswerList()).size();
+        int numberOfCorrectAnswers = (int) globalQuestion.getAnswerList().stream().filter(answer1 -> answer1.isCorrect()).count();
         int numberOfAnswers = globalQuestion.getAnswerList().size();
         boolean positiveScore = false;
         listOfCheckBoxes = new ArrayList<>();
@@ -292,7 +293,7 @@ public class QuizActivity extends AppCompatActivity {
                 listOfUnCheckboxes.add(checkBox4);
             }
             for (CheckBox checkBox : listOfCheckBoxes) {
-                for (Answer answer : globalQuestion.getCorrectAnswers(globalQuestion.getAnswerList())) {
+                for (Answer answer : globalQuestion.getAnswerList().stream().filter(answer1 -> answer1.isCorrect()).collect(Collectors.toList())) {
                     if (checkBox.getText().toString().equals(answer.getText())) {
                         positiveScore = true;
                     }
@@ -332,7 +333,7 @@ public class QuizActivity extends AppCompatActivity {
                 listOfUnRadioButtons.add(radioButton4);
             }
             for (RadioButton radioButton : listOfRadioButtons) {
-                for (Answer answer : globalQuestion.getCorrectAnswers(globalQuestion.getAnswerList())) {
+                for (Answer answer : globalQuestion.getAnswerList().stream().filter(answer1 -> answer1.isCorrect()).collect(Collectors.toList())) {
                     if (radioButton.getText().toString().equals(answer.getText())) {
                         positiveScore = true;
                     }
@@ -394,7 +395,7 @@ public class QuizActivity extends AppCompatActivity {
         ratingBar = (RatingBar) dialogView.findViewById(R.id.ratingBar);
         ratingBar.setStepSize((float) 0.01);
         ratingBar.setRating(totalScore.floatValue());
-        ratingBar.setEnabled(false);
+        // ratingBar.setEnabled(false);
 
         alertBuilder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
             @Override
@@ -473,7 +474,7 @@ public class QuizActivity extends AppCompatActivity {
         ratingBar = (RatingBar) dialogView.findViewById(R.id.ratingBar);
         ratingBar.setStepSize((float) 0.01);
         ratingBar.setRating(totalScore.floatValue());
-        ratingBar.setEnabled(false);
+        // ratingBar.setEnabled(false);
 
         alertBuilder.setPositiveButton("Idi na glavni menu", new DialogInterface.OnClickListener() {
             @Override

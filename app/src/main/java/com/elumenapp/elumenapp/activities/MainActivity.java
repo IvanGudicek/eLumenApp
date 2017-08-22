@@ -30,6 +30,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.elumenapp.elumenapp.R;
 import com.elumenapp.elumenapp.data.MySingleton;
+import com.elumenapp.elumenapp.models.Score;
+import com.elumenapp.elumenapp.models.Subject;
 import com.elumenapp.elumenapp.models.User;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
@@ -40,6 +42,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,17 +52,26 @@ public class MainActivity extends AppCompatActivity
 
     private View globalView;
     private CallbackManager callbackManager = null;
-    private static List<User> listOfUsers = new ArrayList<>();
-
     public static final String SERVER_CONNECTION_URL = "http://192.168.56.1:8080";
 
 
-    public static List<User> getListOfUsers() {
-        return listOfUsers;
+    private static List<User> userList = new ArrayList<>();
+    private static List<Score> scoreList = new ArrayList<>();
+
+    public static List<User> getUserList() {
+        return userList;
     }
 
-    public static void setListOfUsers(List<User> listOfUsers) {
-        MainActivity.listOfUsers = listOfUsers;
+    public static void setUserList(List<User> userList) {
+        MainActivity.userList = userList;
+    }
+
+    public static List<Score> getScoreList() {
+        return scoreList;
+    }
+
+    public static void setScoreList(List<Score> scoreList) {
+        MainActivity.scoreList = scoreList;
     }
 
     @Override
@@ -68,36 +80,36 @@ public class MainActivity extends AppCompatActivity
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    public class ThreadServerPerson implements Runnable {
-
-        @Override
-        public void run() {
-
-            JsonArrayRequest userJsonRequest = new JsonArrayRequest(SERVER_CONNECTION_URL + "/user/list",
-                    new Response.Listener<JSONArray>() {
-                        @Override
-                        public void onResponse(JSONArray response) {
-                            if (response.length() > 0) {
-                                for (int i = 0; i < response.length(); i++) {
-                                    try {
-                                        JSONObject object = response.getJSONObject(i);
-                                        listOfUsers.add(new User(object.getInt("id"), object.getString("facebookId"), object.getString("firstName")
-                                                , object.getString("lastName"), object.getString("fullName")));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    error.printStackTrace();
-                }
-            });
-            MySingleton.getInstance(MainActivity.this).addToRequestQueue(userJsonRequest);
-        }
-    }
+//    public class ThreadServerPerson implements Runnable {
+//
+//        @Override
+//        public void run() {
+//
+//            JsonArrayRequest userJsonRequest = new JsonArrayRequest(SERVER_CONNECTION_URL + "/user/list",
+//                    new Response.Listener<JSONArray>() {
+//                        @Override
+//                        public void onResponse(JSONArray response) {
+//                            if (response.length() > 0) {
+//                                for (int i = 0; i < response.length(); i++) {
+//                                    try {
+//                                        JSONObject object = response.getJSONObject(i);
+//                                        userList.add(new User(object.getInt("id"), object.getString("facebookId"), object.getString("firstName")
+//                                                , object.getString("lastName"), object.getString("fullName")));
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    error.printStackTrace();
+//                }
+//            });
+//            MySingleton.getInstance(MainActivity.this).addToRequestQueue(userJsonRequest);
+//        }
+//    }
 
     private String jsonResponse = null;
     private static User user = new User();
@@ -261,14 +273,14 @@ public class MainActivity extends AppCompatActivity
                             for (int i = 0; i < response.length(); i++) {
                                 try {
                                     JSONObject object = response.getJSONObject(i);
-                                    listOfUsers.add(new User(object.getInt("id"), object.getString("facebookId"), object.getString("firstName")
+                                    userList.add(new User(object.getInt("id"), object.getString("facebookId"), object.getString("firstName")
                                             , object.getString("lastName"), object.getString("fullName")));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
                         }
-                        startActivity(new Intent(MainActivity.this, RecyclerActivity.class));
+                        getScoresForUsers();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -278,6 +290,35 @@ public class MainActivity extends AppCompatActivity
             }
         });
         MySingleton.getInstance(MainActivity.this).addToRequestQueue(userJsonRequest);
+    }
+
+    public void getScoresForUsers() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(MainActivity.SERVER_CONNECTION_URL + "/score/list",
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            if (response.length() > 0) {
+                                for (int i = 0; i < response.length(); i++) {
+                                    JSONObject object = response.getJSONObject(i);
+                                    scoreList.add(new Score(object.getInt("id"), new BigDecimal(object.getString("score")), object.getInt("roundNumber"),
+                                            new User(object.getJSONObject("user").getInt("id"), object.getJSONObject("user").getString("facebookId"), object.getJSONObject("user").getString("firstName"), object.getJSONObject("user").getString("lastName"), object.getJSONObject("user").getString("fullName")),
+                                            new Subject(object.getJSONObject("subject").getInt("id"), object.getJSONObject("subject").getString("name"))));
+                                }
+                            }
+                            startActivity(new Intent(MainActivity.this, UserListActivity.class));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(MainActivity.this, "Pokrenite server te probajte ponovo!", Toast.LENGTH_LONG).show();
+            }
+        });
+        MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonArrayRequest);
     }
 
     public void settingsButtonListener(View view) {
@@ -353,15 +394,11 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_about:
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
-            case R.id.action_login:
+            case R.id.action_logout:
                 LoginManager.getInstance().logOut();
                 Intent login = new Intent(MainActivity.this, LogInActivity.class);
                 startActivity(login);
                 finish();
-                break;
-            case R.id.action_logout:
-                finish();
-                startActivity(getIntent());
                 break;
             case R.id.action_exit:
                 exitButtonListener(globalView);
@@ -380,11 +417,16 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
             case R.id.nav_logout:
+                LoginManager.getInstance().logOut();
+                Intent login = new Intent(MainActivity.this, LogInActivity.class);
+                startActivity(login);
                 finish();
-                startActivity(getIntent());
                 break;
             case R.id.nav_profile:
-                startActivity(new Intent(MainActivity.this, UserActivity.class));
+                Intent profileIntent = new Intent(MainActivity.this, UserActivity.class);
+                profileIntent.putExtra("fullName", user.getFullName());
+                profileIntent.putExtra("facebookId", user.getFacebookId());
+                startActivity(profileIntent);
                 break;
             case R.id.nav_tools:
                 startActivity(new Intent(MainActivity.this, Settings_Activity.class));

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="110dp">
+    android:layout_width="match_parent" android:layout_height="100dp">
 
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:id="@+id/itemImageView"
-        android:padding="4dp"
-        android:layout_marginLeft="10dp"
         android:src="@mipmap/ic_launcher"
+        android:foreground="@drawable/rounded_image"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/itemRatingBar" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="200dp"
-        android:layout_height="29dp"
+        android:layout_height="30dp"
         android:text="username"
         android:gravity="center"
         android:textSize="15dp"
         android:id="@+id/itemUsername"
         android:textStyle="bold"
-        android:layout_alignParentBottom="true"
+        android:layout_marginStart="40dp"
+        android:layout_alignBottom="@+id/itemImageView"
         android:layout_toEndOf="@+id/itemImageView" />
 
     <View
@@ -34,8 +34,13 @@
     <RatingBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/itemRatingBar"
+        android:id="@+id/userRating"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
+        android:isIndicator="true"
         android:layout_above="@+id/itemUsername"
-        android:layout_alignParentEnd="true" />
+        android:layout_toEndOf="@+id/itemImageView"
+        android:layout_marginStart="16dp" />
 
 </RelativeLayout>
