@@ -12,12 +12,10 @@ public class MySingleton {
     private RequestQueue requestQueue;
     private static Context context;
 
-
     private MySingleton(Context context) {
         this.context = context;
         this.requestQueue = getRequestQueue();
     }
-
 
     public RequestQueue getRequestQueue() {
         if (requestQueue == null) {
@@ -26,7 +24,6 @@ public class MySingleton {
         return requestQueue;
     }
 
-
     public static synchronized MySingleton getInstance(Context context) {
         if (mySingletonInstance == null) {
             mySingletonInstance = new MySingleton(context);
@@ -34,9 +31,7 @@ public class MySingleton {
         return mySingletonInstance;
     }
 
-
     public <T> void addToRequestQueue(Request<T> request) {
         requestQueue.add(request);
     }
-
 }

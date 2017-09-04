@@ -192,10 +192,11 @@ public class MainActivity extends AppCompatActivity
         String name = inBundle.getString("firstName");
         String surname = inBundle.getString("lastName");
         String id = inBundle.getString("facebookId");
+        String fullName = inBundle.getString("fullName");
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
 
-        updateFacebookUserToDatabase(new User(id, name, surname, inBundle.getString("fullName")));
+        updateFacebookUserToDatabase(new User(id, name, surname, fullName));
         getUserFromDatabase(id);
 
 //        ExecutorService executorService = Executors.newFixedThreadPool(1);
@@ -315,7 +316,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Toast.makeText(MainActivity.this, "Pokrenite server te probajte ponovo!", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Pokrenite server te pokušajte ponovo!", Toast.LENGTH_LONG).show();
             }
         });
         MySingleton.getInstance(MainActivity.this).addToRequestQueue(jsonArrayRequest);

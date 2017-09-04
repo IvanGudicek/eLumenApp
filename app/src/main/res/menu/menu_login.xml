@@ -13,7 +13,7 @@
         android:title="About"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_login"
+        android:id="@+id/action_logout"
         android:orderInCategory="100"
         android:title="Log out from app"
         app:showAsAction="never" />

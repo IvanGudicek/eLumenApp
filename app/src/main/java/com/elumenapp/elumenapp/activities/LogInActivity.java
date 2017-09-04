@@ -28,14 +28,12 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_facebook_log_in);
-
         callbackManager = CallbackManager.Factory.create();
         accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
             }
         };
-
         profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile newProfile) {
@@ -44,8 +42,6 @@ public class LogInActivity extends AppCompatActivity {
         };
         accessTokenTracker.startTracking();
         profileTracker.startTracking();
-
-
         LoginButton loginButton = (LoginButton)findViewById(R.id.login_button);
         FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
             @Override
@@ -54,11 +50,9 @@ public class LogInActivity extends AppCompatActivity {
                 nextActivity(profile);
                 Toast.makeText(getApplicationContext(), "Logging in...", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onCancel() {
             }
-
             @Override
             public void onError(FacebookException e) {
             }

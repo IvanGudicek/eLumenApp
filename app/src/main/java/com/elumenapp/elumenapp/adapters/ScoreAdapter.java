@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.elumenapp.elumenapp.R;
 import com.elumenapp.elumenapp.models.Score;
@@ -48,6 +49,8 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.RecyclerView
         result.setScale(3, RoundingMode.HALF_UP);
         result = score.getScore().divide(new BigDecimal(score.getRoundNumber()), 3, RoundingMode.HALF_UP);
         holder.scoreRating.setRating(Float.parseFloat(result.toString()));
+        holder.subjectName.setText(score.getSubject().getName());
+        holder.roundNumber.setText(String.valueOf(score.getRoundNumber()));
     }
 
     @Override
@@ -59,11 +62,14 @@ public class ScoreAdapter extends RecyclerView.Adapter<ScoreAdapter.RecyclerView
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         public RatingBar scoreRating;
+        public TextView subjectName;
+        public TextView roundNumber;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
             scoreRating = (RatingBar) itemView.findViewById(R.id.scoreRating);
-           // scoreRating.setStepSize((float) 0.001);
+            subjectName = (TextView) itemView.findViewById(R.id.subjectName);
+            roundNumber = (TextView) itemView.findViewById(R.id.roundNumber);
         }
     }
 }

@@ -75,7 +75,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.RecyclerViewHo
         } else {
             holder.userRating.setRating(Float.parseFloat(totalScore.divide(new BigDecimal(userScores.size()), 3, RoundingMode.HALF_UP).toString()));
         }
-
     }
 
     @Override
@@ -95,7 +94,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.RecyclerViewHo
             imageView = (ImageView) itemView.findViewById(R.id.itemImageView);
             username = (TextView) itemView.findViewById(R.id.itemUsername);
             userRating = (RatingBar) itemView.findViewById(R.id.userRating);
-            // userRating.setStepSize((float) 0.001);
         }
     }
 }

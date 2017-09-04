@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CheckActivity extends AppCompatActivity {
-    private CheckBox checkBox1, checkBox2, checkBox3, checkBox4, checkBox5;
+    private CheckBox checkBox1, checkBox2, checkBox3, checkBox4;
 
     private List<Answer> entiretyList = new ArrayList<>();
 

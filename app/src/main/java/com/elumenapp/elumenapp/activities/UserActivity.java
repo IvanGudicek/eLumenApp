@@ -36,6 +36,7 @@ public class UserActivity extends AppCompatActivity {
     private TextView fullName, achievedResult;
     private ImageView imageOfPerson;
     private Button facebookProfileButton;
+
     private RecyclerView scoreRecyclerVier;
     private RecyclerView.Adapter adapter;
     private LinearLayoutManager linearLayoutManager;
@@ -58,6 +59,7 @@ public class UserActivity extends AppCompatActivity {
         fullName.setText(facebookName);
         imageOfPerson = (ImageView) findViewById(R.id.personImage);
         facebookProfileButton = (Button) findViewById(R.id.facebookProfileButton);
+
         Picasso.with(this).load("https://graph.facebook.com/" + facebookId + "/picture?type=large").into(imageOfPerson);
 
         facebookProfileButton.setOnClickListener(new View.OnClickListener() {

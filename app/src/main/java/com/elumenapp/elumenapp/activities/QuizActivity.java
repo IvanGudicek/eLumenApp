@@ -213,7 +213,6 @@ public class QuizActivity extends AppCompatActivity {
         } else {
             throwLastAlert();
         }
-
     }
 
     public boolean checkStrings(String string) {
@@ -307,7 +306,6 @@ public class QuizActivity extends AppCompatActivity {
                     score = score.subtract(up.divide(down));
                 }
                 positiveScore = false;
-
             }
 
 
@@ -358,7 +356,6 @@ public class QuizActivity extends AppCompatActivity {
         } else {
             returnString = "neutral";
         }
-
         return returnString;
     }
 
@@ -386,16 +383,13 @@ public class QuizActivity extends AppCompatActivity {
         alertBuilder = new AlertDialog.Builder(QuizActivity.this);
         alertBuilder.setTitle("pitanje...");
         alertBuilder.setMessage("Jesi li siguran/a da želiš prekinuti kviz?");
-
         LayoutInflater inflater = QuizActivity.this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.rating, null);
         alertBuilder.setView(dialogView);
         ratingText = (TextView) dialogView.findViewById(R.id.mediumText);
         ratingText.setText("Tvoj ostvareni rezultat je: ");
         ratingBar = (RatingBar) dialogView.findViewById(R.id.ratingBar);
-        ratingBar.setStepSize((float) 0.01);
         ratingBar.setRating(totalScore.floatValue());
-        // ratingBar.setEnabled(false);
 
         alertBuilder.setPositiveButton("Da", new DialogInterface.OnClickListener() {
             @Override
@@ -520,7 +514,7 @@ public class QuizActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 startActivity(new Intent(QuizActivity.this, StartQuizActivity.class));
                 finish();
-                shuffleListOfEntirety();
+                shuffleQuestionList();
             }
         });
         AlertDialog alertDialog = alertBuilder.create();
@@ -535,7 +529,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
 
-    public void shuffleListOfEntirety() {
+    public void shuffleQuestionList() {
         randomQuestionList = new ArrayList<>();
         randomQuestionList.addAll(questionList);
         Collections.shuffle(randomQuestionList);
@@ -562,7 +556,7 @@ public class QuizActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
-                            shuffleListOfEntirety();
+                            shuffleQuestionList();
                             throwNextQuestion();
                             showAlert();
                         }

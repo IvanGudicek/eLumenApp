@@ -34,7 +34,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="let's start quiz :)"
+        android:text="započni kviz :)"
         android:id="@+id/startQuizButton"
         android:onClick="startQuizActivityButtonListener"
         android:layout_alignParentBottom="true"

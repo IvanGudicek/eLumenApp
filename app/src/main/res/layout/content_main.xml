@@ -11,7 +11,7 @@
         android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true"
         android:onClick="startQuizButtonListener"
-        android:text="start quiz"
+        android:text="započni kviz"
         android:layout_alignParentTop="true" />
 
     <Button
@@ -21,7 +21,7 @@
         android:layout_below="@+id/button"
         android:layout_centerHorizontal="true"
         android:onClick="profileButtonListener"
-        android:text="View your profile" />
+        android:text="tvoj profil" />
 
     <Button
         android:id="@+id/button3"
@@ -30,7 +30,7 @@
         android:layout_below="@+id/button7"
         android:layout_centerHorizontal="true"
         android:onClick="listOfPersonsButtonListener"
-        android:text="list of person" />
+        android:text="pregled liste korisnika" />
 
     <Button
         android:id="@+id/button4"
@@ -39,7 +39,7 @@
         android:layout_below="@+id/button3"
         android:layout_centerHorizontal="true"
         android:onClick="settingsButtonListener"
-        android:text="settings" />
+        android:text="postavke" />
 
     <Button
         android:id="@+id/button5"
@@ -48,14 +48,14 @@
         android:layout_below="@+id/button4"
         android:layout_centerHorizontal="true"
         android:onClick="aboutButtonListener"
-        android:text="about" />
+        android:text="o aplikaciji" />
 
     <Button
         android:id="@+id/button6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="exitButtonListener"
-        android:text="exit"
+        android:text="izlaz"
         android:layout_below="@+id/button5"
         android:layout_alignEnd="@+id/button4" />
 

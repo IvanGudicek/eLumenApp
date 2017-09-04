@@ -66,7 +66,6 @@ public class StartQuizActivity extends AppCompatActivity {
         });
         MySingleton.getInstance(StartQuizActivity.this).addToRequestQueue(subjectJsonRequest);
 
-
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
