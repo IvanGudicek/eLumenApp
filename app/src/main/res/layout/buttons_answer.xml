@@ -6,7 +6,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="exit of quiz"
+        android:text="Prekini kviz"
         android:onClick="exitOfQuizButtonAnswerListener"
         android:id="@+id/button10"
         android:layout_alignParentTop="true"
@@ -15,7 +15,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="give me next question"
+        android:text="Sljedeće pitanje"
         android:onClick="nextQuestionButtonAnswerListener"
         android:id="@+id/button11"
         android:layout_alignParentTop="true"

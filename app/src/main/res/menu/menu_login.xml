@@ -5,22 +5,22 @@
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Postavke"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_about"
         android:orderInCategory="100"
-        android:title="About"
+        android:title="O aplikaciji"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_logout"
         android:orderInCategory="100"
-        android:title="Log out from app"
+        android:title="Odjavi se"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_exit"
         android:orderInCategory="100"
-        android:title="Exit"
+        android:title="Izađi iz aplikacije"
         app:showAsAction="never" />
 
 </menu>

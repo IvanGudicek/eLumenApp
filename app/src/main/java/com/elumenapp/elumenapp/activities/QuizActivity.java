@@ -381,8 +381,7 @@ public class QuizActivity extends AppCompatActivity {
 
     public void exitOfQuizButtonListener(View view) {
         alertBuilder = new AlertDialog.Builder(QuizActivity.this);
-        alertBuilder.setTitle("pitanje...");
-        alertBuilder.setMessage("Jesi li siguran/a da želiš prekinuti kviz?");
+        alertBuilder.setTitle("Jesi li siguran/a da želiš prekinuti kviz?");
         LayoutInflater inflater = QuizActivity.this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.rating, null);
         alertBuilder.setView(dialogView);
@@ -478,7 +477,7 @@ public class QuizActivity extends AppCompatActivity {
                 updateScoreToPersonDatabase(totalScore);
                 finish();
             }
-        }).setNeutralButton("cancel", new DialogInterface.OnClickListener() {
+        }).setNeutralButton("Prekini", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -502,8 +501,7 @@ public class QuizActivity extends AppCompatActivity {
 
     public void showAlert() {
         alertBuilder = new AlertDialog.Builder(QuizActivity.this);
-        alertBuilder.setTitle("Informacije");
-        alertBuilder.setMessage("Jesi li spreman/a da započneš kviz?");
+        alertBuilder.setTitle("Jesi li spreman/a da započneš kviz?");
         alertBuilder.setPositiveButton("Oke može!", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

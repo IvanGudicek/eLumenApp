@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/personImage"
                 android:layout_alignEnd="@+id/personFullName"
-                android:text="go to facebook profile" />
+                android:text="Pogledaj Facebook profil" />
 
             <TextView
                 android:id="@+id/achievedResult"

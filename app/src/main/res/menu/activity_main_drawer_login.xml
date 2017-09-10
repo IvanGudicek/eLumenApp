@@ -2,36 +2,36 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item android:title="User preferences:">
+    <item android:title="Korisničke postavke:">
         <menu android:checkableBehavior="single">
             <item
                 android:id="@+id/nav_profile"
-                android:title="go to your profile" />
+                android:title="Pogledaj profil" />
             <item
                 android:id="@+id/nav_logout"
-                android:title="Log out from app" />
+                android:title="Odjavi se" />
 
         </menu>
     </item>
 
 
-    <item android:title="App preferences: ">
+    <item android:title="Aplikacijske postavke: ">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Dijeli" />
             <item
                 android:id="@+id/nav_tools"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="Tools" />
+                android:title="Alati" />
             <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_info_black_24dp"
-                android:title="About" />
+                android:title="O aplikaciji" />
             <item
                 android:id="@+id/nav_exit"
-                android:title="Exit" />
+                android:title="Izađi" />
         </menu>
     </item>
 

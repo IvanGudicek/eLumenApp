@@ -243,10 +243,8 @@ public class MainActivity extends AppCompatActivity
             navigationView.addView(childLinearLayout);
         }
         TextView personFullName = (TextView) findViewById(R.id.personFullName);
-        TextView personUsername = (TextView) findViewById(R.id.personUsername);
         ImageView personImageView = (ImageView) findViewById(R.id.personImageView);
         personFullName.setText(name + " " + surname);
-        personUsername.setText(id);
         String imgUrl = "https://graph.facebook.com/" + inBundle.getString("facebookId") + "/picture?type=large";
         Picasso.with(this)
                 .load(imgUrl)

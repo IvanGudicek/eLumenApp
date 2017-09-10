@@ -13,19 +13,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="This is about activity and this activity serve for explainig all about of eLumenApp ;) go fun yourself :)"
+        android:text="Ovo je beta verzija eLumen aplikacije"
         android:id="@+id/textView2"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="54dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="first change bla bla blab la"
-        android:id="@+id/textView21"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

@@ -2,33 +2,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item android:title="User preferences:">
+    <item android:title="Korisničke postavke:">
         <menu android:checkableBehavior="single">
             <item
                 android:id="@+id/nav_login"
-                android:title="Log in to app" />
+                android:title="Ulogiraj se" />
 
         </menu>
     </item>
 
 
-    <item android:title="App preferences: ">
+    <item android:title="Aplikacijske postavke: ">
         <menu>
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Dijeli" />
             <item
                 android:id="@+id/nav_tools"
                 android:icon="@drawable/ic_menu_manage"
-                android:title="Tools" />
+                android:title="Alati" />
             <item
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_info_black_24dp"
-                android:title="About" />
+                android:title="O aplikaciji" />
             <item
                 android:id="@+id/nav_exit"
-                android:title="Exit" />
+                android:title="Izađi" />
         </menu>
     </item>
 
